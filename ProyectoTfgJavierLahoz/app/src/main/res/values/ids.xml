@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="fab" type="id" />
+    <item name="btnGuardar" type="id" />
+    <item name="llamar" type="id" />
+    <item name="correo" type="id" />
+</resources>

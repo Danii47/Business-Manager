@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_inicio">
+
+    <fragment
+        android:id="@+id/nav_inicio"
+        android:name="com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.InicioFragment"
+        android:label="@string/menu_inicio"
+        tools:layout="@layout/fragment_inicio" />
+
+    <fragment
+        android:id="@+id/nav_empleados"
+        android:name="com.example.proyectotfgjavierlahoz.actividades.fragmentos.empleados.EmpleadosFragment"
+        android:label="@string/menu_empleados"
+        tools:layout="@layout/fragment_empleados" />
+
+    <fragment
+        android:id="@+id/nav_departamentos"
+        android:name="com.example.proyectotfgjavierlahoz.actividades.fragmentos.departamentos.DepartamentosFragment"
+        android:label="@string/menu_departamentos"
+        tools:layout="@layout/fragment_departamentos" />
+</navigation>

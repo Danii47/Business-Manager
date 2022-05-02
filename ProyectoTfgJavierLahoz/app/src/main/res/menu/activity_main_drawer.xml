@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_inicio"
+            android:icon="@drawable/icons8_home_page_72___"
+            android:title="@string/menu_inicio" />
+        <item
+            android:id="@+id/nav_empleados"
+            android:icon="@drawable/icons8_personal_growth_96___"
+            android:title="@string/menu_empleados" />
+        <item
+            android:id="@+id/nav_departamentos"
+            android:icon="@drawable/icons8_department_60"
+            android:title="@string/menu_departamentos" />
+    </group>
+</menu>

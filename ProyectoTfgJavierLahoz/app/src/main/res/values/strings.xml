@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">ProyectoTFG</string>
+
+    <!-- Login & Register Activity -->
+
+    <string name="lblNombre">Nombre</string>
+    <string name="lblApellido">Apellidos</string>
+    <string name="lblEmail">Email</string>
+    <string name="lblDni">DNI</string>
+    <string name="lblContraseña">Contraseña</string>
+    <string name="lblConfContraseña">Confirmar contraseña</string>
+    <string name="lblCodigo">Codigo unico</string>
+    <string name="lblAcceder">Acceder</string>
+    <string name="lblRegistrarse">Registrarse</string>
+
+    <!-- Validacion entradas Login & Register -->
+
+    <string name="errorEmail">Introduce correo valido</string>
+    <string name="contraseñaVacia">Introduce contraseña</string>
+    <string name="errorNombre">Introduce nombre</string>
+    <string name="errorApellidos">Introduce apellidos</string>
+    <string name="errorContraseña">Contraseña incorrecta</string>
+    <string name="errorDni">Dni no valido</string>
+    <string name="registroCorrecto">Registro Correcto</string>
+    <string name="errorRegistro">DNI introducido ya existe</string>
+    <string name="errorLogin">DNI o contraseña incorrecta</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Menu princiapl -->
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_empleados">Empleados</string>
+    <string name="menu_departamentos">Departamentos</string>
+
+    <string name="menu_nombre">Nombre y apellidos</string>
+    <string name="menu_correo">Correo electronico</string>
+    <string name="menu_btn_cerrar_sesion">Cerrar sesion</string>
+</resources>
