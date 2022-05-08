@@ -101,22 +101,25 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if(!validacionSesion.comprobacionContraseña(edtContraseña, edtConfContraseña, getString(R.string.errorContraseña))){
             return;
         }
+        if(dataBaseHelper.comprobarDni(edtDni.getText().toString())){
+            if(!dataBaseHelper.comprobarUsuario(edtDni.getText().toString())){
+                empleado.setDni(edtDni.getText().toString().trim());
+                empleado.setNombre(edtNombre.getText().toString().trim());
+                empleado.setApellidos(edtApellidos.getText().toString().trim());
+                empleado.setCorreo(edtEmail.getText().toString().trim());
+                empleado.setContraseña(edtContraseña.getText().toString().trim());
 
-        if(!dataBaseHelper.comprobarUsuario(edtDni.getText().toString())){
-            empleado.setDni(edtDni.getText().toString().trim());
-            empleado.setNombre(edtNombre.getText().toString().trim());
-            empleado.setApellidos(edtApellidos.getText().toString().trim());
-            empleado.setCorreo(edtEmail.getText().toString().trim());
-            empleado.setContraseña(edtContraseña.getText().toString().trim());
+                dataBaseHelper.añadirEmpleado(empleado);
 
-            dataBaseHelper.añadirEmpleado(empleado);
+                Toast.makeText(this,getString(R.string.registroCorrecto), Toast.LENGTH_LONG).show();
 
-            Toast.makeText(this,getString(R.string.registroCorrecto), Toast.LENGTH_LONG).show();
-
-            Intent login = new Intent(this, LoginActivity.class);
-            startActivity(login);
+                Intent login = new Intent(this, LoginActivity.class);
+                startActivity(login);
+            } else {
+                Toast.makeText(this, getString(R.string.errorRegistro), Toast.LENGTH_LONG).show();
+            }
         } else {
-            Toast.makeText(this, getString(R.string.errorRegistro), Toast.LENGTH_LONG).show();
+            Toast.makeText(this,getString(R.string.permisosRegistro), Toast.LENGTH_LONG).show();
         }
     }
 }

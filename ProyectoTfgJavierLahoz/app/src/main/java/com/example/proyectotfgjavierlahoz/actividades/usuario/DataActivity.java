@@ -17,11 +17,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
+import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -43,6 +45,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     private EditText edtApellido;
     private FloatingActionButton btnCancelar;
     private FloatingActionButton btnGuardar;
+    private Switch swcAdministrador;
 
     private Bundle datos;
     private String dni;
@@ -78,6 +81,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         btnCancelar = (FloatingActionButton) findViewById(R.id.btnCancelar);
         btnGuardar = (FloatingActionButton) findViewById(R.id.btnGuardar);
         editImagen = (ImageView) findViewById(R.id.imgEdit);
+        swcAdministrador = (Switch) findViewById(R.id.swcAdministrador);
     }
 
     private void inicializarObjetos(){
@@ -89,6 +93,8 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     private void establecerDatos(){
         dni = datos.getString("dni");
 
+        datosAdministrador();
+
         empleado = databaseHelper.datosUsuario(dni);
         edtNombre.setText(empleado.getNombre());
         edtApellido.setText(empleado.getApellidos());
@@ -97,10 +103,18 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         edtDireccion.setText(empleado.getDireccion());
         txvDni.setText(empleado.getDni());
 
+        if(empleado.getAdministrador() == 1){
+            swcAdministrador.setChecked(true);
+        } else {
+            swcAdministrador.setChecked(false);
+        }
+
         Bitmap imagen = databaseHelper.obtenerImagen(dni);
 
         if(imagen != null){
             imagenUsuario.setImageBitmap(imagen);
+        } else{
+            imagenUsuario.setImageResource(R.drawable.user_logo);
         }
 
     }
@@ -120,6 +134,12 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
                 empleado.setCorreo(edtCorreo.getText().toString());
                 empleado.setDireccion(edtDireccion.getText().toString());
                 empleado.setMovil(edtMovil.getText().toString());
+
+                if(swcAdministrador.isChecked()){
+                    empleado.setAdministrador(1);
+                } else {
+                    empleado.setAdministrador(0);
+                }
 
                 if(imagenBitmap != null){
                     databaseHelper.guardarImagen(imagenBitmap, dni);
@@ -163,6 +183,12 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void datosAdministrador(){
+        if(LoginActivity.administrador == true){
+            swcAdministrador.setClickable(true);
         }
     }
 }

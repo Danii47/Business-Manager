@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TABLA_EMPLEADOS = "empleados";
     private static final String TABLA_DEPARTAMENTOS = "departamentos";
+    private static final String TABLA_DNI = "dni";
 
     private static final String COL_EMP_DNI = "empleado_dni";
     private static final String COL_EMP_NOMBRE = "empleado_nombre";
@@ -42,13 +43,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_EMP_IMAGEN = "empleado_imagen";
     private static final String COL_EMP_DPTO = "empleado_dpto";
     private static final String COL_EMP_PUESTO = "empleado_puesto";
+
     private static final String COL_DEP_CODIGO = "departamento_codigo";
     private static final String COL_DEP_NOMBRE = "departamento_nombre";
     private static final String COL_DEP_ENCARGADO = "departamento_encargado";
 
+    private static final String COL_DNI_DNI = "dni_empleado";
+
     private String CREAR_TABLA_DEPARTAMENTOS = "Create table " + TABLA_DEPARTAMENTOS + "(" + COL_DEP_CODIGO  + " TEXT PRIMARY KEY," +
             COL_DEP_NOMBRE + " TEXT NOT NULL, " + COL_DEP_ENCARGADO + " TEXT )";
-    private String BORRAR_TABLA_DEPARTAMENTOS = "Drop table if exists " + TABLA_DEPARTAMENTOS;
 
     private String CREAR_TABLA_EMPLEADOS = "Create table " + TABLA_EMPLEADOS + " (" + COL_EMP_DNI + " TEXT PRIMARY KEY," +
             COL_EMP_NOMBRE + " TEXT NOT NULL, " + COL_EMP_APELLIDOS + " TEXT NOT NULL," +
@@ -57,7 +60,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             COL_EMP_PUESTO + " TEXT, " +
             COL_EMP_DPTO + " integer, Foreign key (" + COL_EMP_DPTO + ") references " + TABLA_DEPARTAMENTOS + "(" + COL_DEP_CODIGO + "))";
 
+    private String CREAR_TABLA_DNI = "Create table " + TABLA_DNI  + "(" + COL_DNI_DNI + " TEXT PRIMARY KEY)";
+
+
     private String BORRAR_TABLA_EMPLEADOS = "Drop table if exists " + TABLA_EMPLEADOS;
+    private String BORRAR_TABLA_DEPARTAMENTOS = "Drop table if exists " + TABLA_DEPARTAMENTOS;
+    private String BORRAR_TABLA_DNI = "Drop table if exists " + TABLA_DNI;
+
 
     private Context context;
 
@@ -70,6 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREAR_TABLA_DEPARTAMENTOS);
         db.execSQL(CREAR_TABLA_EMPLEADOS);
+        db.execSQL(CREAR_TABLA_DNI);
 
     }
 
@@ -77,6 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int versionAntigua, int versionNueva) {
         db.execSQL(BORRAR_TABLA_DEPARTAMENTOS);
         db.execSQL(BORRAR_TABLA_EMPLEADOS);
+        db.execSQL(BORRAR_TABLA_DNI);
         onCreate(db);
     }
 
@@ -90,7 +101,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         datos.put(COL_EMP_DIREC, emp.getDireccion());
         datos.put(COL_EMP_MOVIL, emp.getMovil());
         datos.put(COL_EMP_CONTRASEÑA, emp.getContraseña());
-        datos.put(COL_EMP_ADMIN, emp.getAdministrador());
 
         bd.insert(TABLA_EMPLEADOS, null, datos);
         bd.close();
@@ -156,6 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             empleado.setDireccion(cursor.getString(cursor.getColumnIndex(COL_EMP_DIREC)));
             empleado.setDepartamento(cursor.getString(cursor.getColumnIndex(COL_EMP_DPTO)));
             empleado.setPuesto(cursor.getString(cursor.getColumnIndex(COL_EMP_PUESTO)));
+            empleado.setAdministrador(cursor.getInt(cursor.getColumnIndex(COL_EMP_ADMIN)));
         }
         return empleado;
     }
@@ -206,6 +217,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         datos.put(COL_EMP_CORREO, empleado.getCorreo());
         datos.put(COL_EMP_DIREC, empleado.getDireccion());
         datos.put(COL_EMP_MOVIL, empleado.getMovil());
+        datos.put(COL_EMP_ADMIN, empleado.getAdministrador());
 
         bd.update(TABLA_EMPLEADOS, datos, COL_EMP_DNI + " = '" + dni + "'", null);
     }
@@ -248,6 +260,41 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             bd.close();
         }
         return listaEmpleados;
+    }
+
+    public void añadirDNI(String dni){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        ContentValues datos = new ContentValues();
+        datos.put(COL_DNI_DNI, dni);
+        bd.insert(TABLA_DNI, null, datos);
+        bd.close();
+    }
+
+    public boolean comprobarDni(String dni){
+
+        SQLiteDatabase bd = this.getReadableDatabase();
+        boolean usuarioEncontrado = false;
+
+        String query = "Select dni_empleado from dni where dni_empleado = ?";
+
+        String[] columnas = {COL_DNI_DNI};
+        String consulta = COL_DNI_DNI  + " = ?";
+        String[] argumentos = {dni};
+
+        Cursor cursor = bd.rawQuery(query, argumentos);
+
+        if(cursor.getCount() >= 1){
+            usuarioEncontrado = true;
+        }
+        return usuarioEncontrado;
+    }
+
+    public void eliminarUsuario(String dni){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        bd.delete(TABLA_EMPLEADOS, COL_EMP_DNI + " = " + "'" + dni + "'", null);
+        bd.delete(TABLA_DNI, COL_DNI_DNI + " = " + "'" + dni + "'", null);
     }
 }
 

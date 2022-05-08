@@ -5,11 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".actividades.usuario.DataActivity">
-    <ImageView
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        app:civ_border_width= "2dp"
+        app:civ_border_color="@color/purple_500"
         android:id="@+id/imgEmpleado"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
-        android:scaleType="centerCrop"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -106,7 +108,7 @@
         android:id="@+id/txvInfoLaboral"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:text="Informacion laboral"
         android:textSize="23dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
@@ -124,7 +126,7 @@
         android:text="RRHH"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.985"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/txvDepartamento"
         app:layout_constraintTop_toBottomOf="@+id/txvInfoLaboral" />
 
@@ -155,6 +157,19 @@
         app:layout_constraintTop_toBottomOf="@+id/txvDepartamento" />
 
     <TextView
+        android:id="@+id/txvAdministrador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="monospace"
+        android:text="Administrador"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/txvPuesto" />
+
+    <TextView
         android:id="@+id/txvPuesto2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -163,7 +178,7 @@
         android:text="Empleado"
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.988"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/txvPuesto"
         app:layout_constraintTop_toBottomOf="@+id/txvDepartamento2" />
 
@@ -272,6 +287,19 @@
         app:layout_constraintHorizontal_bias="0.933"
         app:layout_constraintStart_toEndOf="@+id/txvDni"
         app:layout_constraintTop_toBottomOf="@+id/edtMovil" />
+
+    <Switch
+        android:id="@+id/swcAdministrador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:clickable="false"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txvAdministrador"
+        app:layout_constraintTop_toBottomOf="@+id/txvPuesto2"
+        tools:ignore="MissingConstraints" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

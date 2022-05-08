@@ -3,8 +3,11 @@ package com.example.proyectotfgjavierlahoz.actividades.usuario;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -14,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import com.example.proyectotfgjavierlahoz.R;
+import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,6 +27,7 @@ import org.w3c.dom.Text;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imgEmpleado;
+    private ImageView imgEditEmpleado;
     private TextView txvNombre;
     private TextView txvDni;
     private TextView txvEmail;
@@ -48,10 +53,13 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         establecerDatos();
 
+
+
     }
 
     private void inicializarVistas(){
         imgEmpleado = (ImageView) findViewById(R.id.imgEmpleado);
+        imgEditEmpleado = (ImageView) findViewById(R.id.imgEdit);
         txvNombre = (TextView) findViewById(R.id.txvNombre);
         txvDni = (TextView) findViewById(R.id.txvDni2);
         txvEmail = (TextView) findViewById(R.id.txvEmail2);
@@ -71,6 +79,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private void inicializarEscuchadores(){
         btnLlamar.setOnClickListener(this);
         btnCorreo.setOnClickListener(this);
+        imgEditEmpleado.setOnClickListener(this);
     }
 
     private void establecerDatos(){
@@ -81,6 +90,9 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
             imgEmpleado.setImageBitmap(bd.obtenerImagen(dni));
         } else {
             imgEmpleado.setImageResource(R.drawable.user_logo);
+        }
+        if(LoginActivity.administrador){
+            imgEditEmpleado.setVisibility(View.VISIBLE);
         }
         txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
         txvDni.setText(empleado.getDni());
@@ -110,6 +122,11 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Intent llamar = new Intent(Intent.ACTION_CALL, Uri.parse(telefono));
                     startActivity(llamar);
                 }
+                break;
+            case R.id.imgEdit:
+                Intent editUserAdmin = new Intent(this,DataActivity.class);
+                editUserAdmin.putExtra("dni", dni);
+                startActivity(editUserAdmin);
                 break;
         }
     }

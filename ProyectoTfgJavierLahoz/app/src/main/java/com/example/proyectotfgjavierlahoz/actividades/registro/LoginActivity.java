@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
-import com.example.proyectotfgjavierlahoz.actividades.registro.RegisterActivity;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.example.proyectotfgjavierlahoz.validadores.ValidacionSesion;
 
@@ -29,6 +28,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     ValidacionSesion validacionSesion;
     DatabaseHelper databaseHelper;
 
+    public static boolean administrador = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         inicializarVistas();
         inicializarObjetos();
         escuchadorBotones();
+
     }
 
     private void inicializarVistas(){
@@ -83,12 +85,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String contraseña = edtContraseña.getText().toString().trim();
 
         if(databaseHelper.comprobarUsuario(dni, contraseña)){
+            administrador = comprobarAdministrador();
             Intent login = new Intent(this , MainActivity.class);
             login.putExtra("dni", dni);
             startActivity(login);
-            Log.i("testt", "intent aplicacion");
         } else {
             Toast.makeText(this, getString(R.string.errorLogin), Toast.LENGTH_LONG).show();
         }
+    }
+
+    private boolean comprobarAdministrador(){
+        boolean administrador = false;
+        int admin = databaseHelper.datosUsuario(LoginActivity.dni).getAdministrador();
+        if (admin == 1) {
+            administrador = true;
+        }
+
+        return administrador;
     }
 }

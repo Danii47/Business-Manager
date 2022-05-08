@@ -74,6 +74,8 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 
         if(imagen != null){
             binding.imgEmpleado.setImageBitmap(imagen);
+        } else {
+            binding.imgEmpleado.setImageResource(R.drawable.user_logo);
         }
 
     }

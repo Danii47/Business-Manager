@@ -57,7 +57,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         return usuarios.size();
     }
 
-    public void filtrar(ArrayList<Empleado> lista){
+    public void filtrar(List<Empleado> lista){
         usuarios = lista;
         notifyDataSetChanged();
     }

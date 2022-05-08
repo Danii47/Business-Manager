@@ -23,6 +23,7 @@
     <string name="errorDni">Dni no valido</string>
     <string name="registroCorrecto">Registro Correcto</string>
     <string name="errorRegistro">DNI introducido ya existe</string>
+    <string name="permisosRegistro">DNI introducido sin permisos para registro</string>
     <string name="errorLogin">DNI o contraseña incorrecta</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -40,4 +41,9 @@
     <string name="menu_nombre">Nombre y apellidos</string>
     <string name="menu_correo">Correo electronico</string>
     <string name="menu_btn_cerrar_sesion">Cerrar sesion</string>
+    <string name="menu_borrar_cuenta">Borrar cuenta</string>
+    <string name="menu_cuenta_borrada">Cuenta eliminada con exito</string>
+
+    <!-- Fragmento Empleados -->
+    <string name="insertar_dni">DNI insertado correctamente</string>
 </resources>

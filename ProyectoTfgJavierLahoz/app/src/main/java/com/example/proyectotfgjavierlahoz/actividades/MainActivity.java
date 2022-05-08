@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView txvNombre;
     TextView txvCorreo;
     Button btnCerrarSesion;
+    Button btnBorrarCuenta;
     ImageView imagenUsuario;
 
     Empleado empleado;
@@ -97,18 +99,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txvCorreo = (TextView) view.findViewById(R.id.txvCorreo);
         btnCerrarSesion = (Button) findViewById(R.id.btnCerrarSesion);
         imagenUsuario = (ImageView) view.findViewById(R.id.imagenUsuario);
-
+        btnBorrarCuenta = (Button) findViewById(R.id.btnBorrarCuenta);
     }
 
     private void inicializarObjetos(){
         databaseHelper = new DatabaseHelper(this);
         empleado = new Empleado();
         datos = getIntent().getExtras();
-
     }
 
     private void establecerDatosUsuario(){
-        dni = datos.getString("dni");
+        //dni = datos.getString("dni");
+        dni = LoginActivity.dni;
         empleado = databaseHelper.datosUsuario(dni);
 
         txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
@@ -117,15 +119,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Bitmap imagen = databaseHelper.obtenerImagen(dni);
         if(imagen != null){
             imagenUsuario.setImageBitmap(imagen);
+        } else {
+            imagenUsuario.setImageResource(R.drawable.user_logo);
         }
     }
 
     private void escuchadorBotones(){
         btnCerrarSesion.setOnClickListener(this);
         imagenUsuario.setOnClickListener(this);
+        btnBorrarCuenta.setOnClickListener(this);
     }
 
-    private void crearDialogo(){
+    private void dialogoCerrarSesion(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle("Cerrar sesion");
         alertDialogBuilder.setMessage("¿Seguro que desea cerrar sesion?");
@@ -145,11 +150,36 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }).create().show();
     }
 
+    private void dialogoBorrarCuenta(){
+        AlertDialog.Builder dialogBorrarCuenta = new AlertDialog.Builder(this);
+        dialogBorrarCuenta.setTitle("Borrar cuenta")
+                .setMessage("¿Seguro que desea borrar la cuenta?")
+                .setCancelable(false)
+                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        databaseHelper.eliminarUsuario(dni);
+                        Toast.makeText(MainActivity.this,getString(R.string.menu_cuenta_borrada), Toast.LENGTH_LONG).show();
+                        Intent inicioSesion = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(inicioSesion);
+                    }
+                })
+                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                }).create().show();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnCerrarSesion:
-                crearDialogo();
+                dialogoCerrarSesion();
+                break;
+            case R.id.btnBorrarCuenta:
+                dialogoBorrarCuenta();
                 break;
         }
     }

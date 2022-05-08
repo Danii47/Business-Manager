@@ -8,7 +8,7 @@ public class Empleado {
     private String apellidos;
     private String contraseña;
     private String correo;
-    private String administrador;
+    private int administrador;
     private String direccion;
     private String movil;
     private String puesto;
@@ -56,11 +56,11 @@ public class Empleado {
         this.correo = correo;
     }
 
-    public String getAdministrador(){
+    public int getAdministrador(){
         return administrador;
     }
 
-    public void setAdministrador(String administrador){
+    public void setAdministrador(int administrador){
         this.administrador = administrador;
     }
 
