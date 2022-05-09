@@ -19,10 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> implements View.OnClickListener {
+public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
     List<Empleado> usuarios;
     private View.OnClickListener listener;
+    private View.OnLongClickListener longListener;
 
     public UserListAdapter(List<Empleado> usuarios){
         this.usuarios = usuarios;
@@ -34,6 +35,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lista_usuarios, parent, false);
 
         view.setOnClickListener(this);
+        view.setOnLongClickListener(this);
         return new UserViewHolder(view);
     }
 
@@ -66,11 +68,23 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
         this.listener = listener;
     }
 
+    public void setOnLongClickListener(View.OnLongClickListener longListener){
+        this.longListener = longListener;
+    }
+
     @Override
     public void onClick(View view) {
         if(listener != null){
             listener.onClick(view);
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if(longListener != null){
+            longListener.onLongClick(view);
+        }
+        return false;
     }
 
     public class UserViewHolder extends RecyclerView.ViewHolder {

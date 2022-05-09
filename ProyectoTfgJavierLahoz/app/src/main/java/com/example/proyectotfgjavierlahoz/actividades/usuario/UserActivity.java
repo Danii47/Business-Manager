@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,13 +28,13 @@ import org.w3c.dom.Text;
 public class UserActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView imgEmpleado;
-    private ImageView imgEditEmpleado;
     private TextView txvNombre;
     private TextView txvDni;
     private TextView txvEmail;
     private TextView txvNumero;
     private TextView txvDireccion;
     private FloatingActionButton btnCorreo;
+    private Switch swcAdministrador;
     private FloatingActionButton btnLlamar;
 
     private DatabaseHelper bd;
@@ -59,7 +60,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     private void inicializarVistas(){
         imgEmpleado = (ImageView) findViewById(R.id.imgEmpleado);
-        imgEditEmpleado = (ImageView) findViewById(R.id.imgEdit);
         txvNombre = (TextView) findViewById(R.id.txvNombre);
         txvDni = (TextView) findViewById(R.id.txvDni2);
         txvEmail = (TextView) findViewById(R.id.txvEmail2);
@@ -67,6 +67,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         txvDireccion = (TextView) findViewById(R.id.txvDireccion2);
         btnLlamar = (FloatingActionButton) findViewById(R.id.llamar);
         btnCorreo = (FloatingActionButton) findViewById(R.id.correo);
+        swcAdministrador = (Switch) findViewById(R.id.swcAdministrador);
 
     }
 
@@ -79,7 +80,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
     private void inicializarEscuchadores(){
         btnLlamar.setOnClickListener(this);
         btnCorreo.setOnClickListener(this);
-        imgEditEmpleado.setOnClickListener(this);
     }
 
     private void establecerDatos(){
@@ -91,14 +91,18 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             imgEmpleado.setImageResource(R.drawable.user_logo);
         }
-        if(LoginActivity.administrador){
-            imgEditEmpleado.setVisibility(View.VISIBLE);
-        }
+
         txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
         txvDni.setText(empleado.getDni());
         txvEmail.setText(empleado.getCorreo());
         txvNumero.setText(empleado.getMovil());
         txvDireccion.setText(empleado.getDireccion());
+
+        if(LoginActivity.administrador == true){
+            swcAdministrador.setChecked(true);
+        } else {
+            swcAdministrador.setChecked(false);
+        }
 
     }
 
@@ -122,11 +126,6 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
                     Intent llamar = new Intent(Intent.ACTION_CALL, Uri.parse(telefono));
                     startActivity(llamar);
                 }
-                break;
-            case R.id.imgEdit:
-                Intent editUserAdmin = new Intent(this,DataActivity.class);
-                editUserAdmin.putExtra("dni", dni);
-                startActivity(editUserAdmin);
                 break;
         }
     }

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
+import com.example.proyectotfgjavierlahoz.actividades.usuario.DataActivity;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.UserActivity;
 import com.example.proyectotfgjavierlahoz.adaptadores.UserListAdapter;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentEmpleadosBinding;
@@ -31,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EmpleadosFragment extends Fragment implements View.OnClickListener, SearchView.OnQueryTextListener {
+public class EmpleadosFragment extends Fragment implements View.OnClickListener, SearchView.OnQueryTextListener, View.OnLongClickListener {
 
     private FragmentEmpleadosBinding binding;
 
@@ -40,6 +41,8 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
 
     private DatabaseHelper bd;
     private ValidacionSesion validacion;
+
+    private String dni;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,6 +78,7 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
         elementos = bd.obtenerUsuarios();
         adapter = new UserListAdapter(elementos);
         adapter.setOnClickListener(this);
+        adapter.setOnLongClickListener(this);
         binding.fabAAdirDNI.setOnClickListener(this);
         binding.rvListausuarios.setAdapter(adapter);
         binding.svEmpleado.setOnQueryTextListener(this);
@@ -116,7 +120,7 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
                 }
             }).create().show();
         } else {
-            String dni = elementos.get(binding.rvListausuarios.getChildAdapterPosition(view)).getDni();
+            dni = elementos.get(binding.rvListausuarios.getChildAdapterPosition(view)).getDni();
 
             Intent datosUsuario = new Intent(getContext(), UserActivity.class);
             datosUsuario.putExtra("dni", dni);
@@ -152,5 +156,16 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
         if(LoginActivity.administrador == true){
             binding.fabAAdirDNI.show();
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        if(LoginActivity.administrador == true){
+            dni = elementos.get(binding.rvListausuarios.getChildAdapterPosition(view)).getDni();
+            Intent editUserAdmin = new Intent(getActivity(), DataActivity.class);
+            editUserAdmin.putExtra("dni", dni);
+            startActivity(editUserAdmin);
+        }
+        return false;
     }
 }

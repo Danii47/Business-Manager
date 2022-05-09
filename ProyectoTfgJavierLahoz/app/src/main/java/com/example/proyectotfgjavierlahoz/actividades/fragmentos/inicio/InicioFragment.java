@@ -70,6 +70,12 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
         binding.txvMovil2.setText(empleado.getMovil());
         binding.txvDireccion2.setText(empleado.getDireccion());
 
+        if(LoginActivity.administrador == true){
+            binding.swcAdministrador.setChecked(true);
+        } else {
+            binding.swcAdministrador.setChecked(false);
+        }
+
         Bitmap imagen = databaseHelper.obtenerImagen(dni);
 
         if(imagen != null){
