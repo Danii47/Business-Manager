@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.proyectotfgjavierlahoz.R;
@@ -17,6 +20,9 @@ import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentInicioBinding;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class InicioFragment extends Fragment implements View.OnClickListener {
@@ -27,6 +33,10 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
     private Empleado empleado;
 
     private String dni;
+
+    private LaboralFragment laboralFragment;
+    private PersonalFragment personalFragment;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,7 +49,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
         inicializarObjetos();
         establecerDatosUsuario();
         escuchadoresBotones();
-
 
         return root;
     }
@@ -57,6 +66,10 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
     private void inicializarObjetos(){
         databaseHelper = new DatabaseHelper(getContext());
         empleado = new Empleado();
+
+        laboralFragment = new LaboralFragment();
+        personalFragment = new PersonalFragment();
+
     }
 
     private void establecerDatosUsuario(){
@@ -65,16 +78,6 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
         empleado = databaseHelper.datosUsuario(dni);
 
         binding.txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
-        binding.txvDni2.setText(empleado.getDni());
-        binding.txvEmail2.setText(empleado.getCorreo());
-        binding.txvMovil2.setText(empleado.getMovil());
-        binding.txvDireccion2.setText(empleado.getDireccion());
-
-        if(LoginActivity.administrador == true){
-            binding.swcAdministrador.setChecked(true);
-        } else {
-            binding.swcAdministrador.setChecked(false);
-        }
 
         Bitmap imagen = databaseHelper.obtenerImagen(dni);
 
@@ -84,6 +87,18 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
             binding.imgEmpleado.setImageResource(R.drawable.user_logo);
         }
 
+        establecerTabs();
+
+    }
+
+    private void establecerTabs(){
+
+        binding.tabLayout.setupWithViewPager(binding.vpInfos);
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager(), 0);
+        viewPagerAdapter.añadirFragmento(personalFragment, "Info. Personal");
+        viewPagerAdapter.añadirFragmento(laboralFragment, "Info. Laboral");
+        binding.vpInfos.setAdapter(viewPagerAdapter);
     }
 
     @Override
@@ -94,6 +109,38 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
                 i1.putExtra("dni", dni);
                 startActivity(i1);
                 break;
+        }
+    }
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+
+        private List<Fragment> fragmentos = new ArrayList<>();
+        private List<String> titulosFragmentos = new ArrayList<>();
+
+        public ViewPagerAdapter(@NonNull FragmentManager fm, int behavior) {
+            super(fm, behavior);
+        }
+
+        public void añadirFragmento(Fragment fragmento, String titulo){
+            fragmentos.add(fragmento);
+            titulosFragmentos.add(titulo);
+        }
+
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return fragmentos.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return fragmentos.size();
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titulosFragmentos.get(position);
         }
     }
 }
