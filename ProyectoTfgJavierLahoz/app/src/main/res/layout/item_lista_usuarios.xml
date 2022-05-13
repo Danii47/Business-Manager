@@ -29,11 +29,11 @@
             android:orientation="vertical">
             <TextView
                 android:id="@+id/txvNombre"
+                android:textColor="@color/purple_500"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="Javier Lahoz"
-                android:textColor="@color/purple_500"
                 tools:ignore="InvalidId">
             </TextView>
             <TextView

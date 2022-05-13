@@ -3,6 +3,7 @@ package com.example.proyectotfgjavierlahoz.actividades;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setSupportActionBar(binding.appBarMain.toolbar);
+
+        binding.appBarMain.toolbar.setBackgroundColor(getResources().getColor(R.color.gris));
+
 
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;

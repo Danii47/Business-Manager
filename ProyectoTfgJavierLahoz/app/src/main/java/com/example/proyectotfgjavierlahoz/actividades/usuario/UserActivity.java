@@ -98,7 +98,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
         txvNumero.setText(empleado.getMovil());
         txvDireccion.setText(empleado.getDireccion());
 
-        if(LoginActivity.administrador == true){
+        if(empleado.getAdministrador() == 1){
             swcAdministrador.setChecked(true);
         } else {
             swcAdministrador.setChecked(false);

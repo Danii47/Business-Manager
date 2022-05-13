@@ -22,4 +22,8 @@
     <style name="Theme.ProyectoTfgJavierLahoz.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ProyectoTfgJavierLahoz.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name = "DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/purple_500</item>
+    </style>
 </resources>

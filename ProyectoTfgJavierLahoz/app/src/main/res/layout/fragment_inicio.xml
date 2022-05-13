@@ -6,34 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".actividades.fragmentos.inicio.InicioFragment">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgEmpleado"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="28dp"
-        app:civ_border_color="@color/purple_500"
-        app:civ_border_width="2dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/user_logo" />
-
-    <TextView
-        android:id="@+id/txvNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-light"
-        android:text="Javier Lahoz"
-        android:textColor="@color/purple_500"
-        android:textSize="35dp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgEmpleado" />
-
     <TextView
         android:id="@+id/txvAdministrador"
         android:layout_width="wrap_content"
@@ -254,13 +226,13 @@
         android:id="@+id/txvInfoPersonal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:text="INFORMACION PERSONAL"
         android:textSize="23dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/txvNombre" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     <TextView
         android:id="@+id/txvInfoLaboral"
@@ -284,6 +256,55 @@
         android:src="@android:drawable/ic_menu_edit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:layout_marginTop="-20dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:background="@drawable/side_nav_bar"
+            android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgEmpleado"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="36dp"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/user_logo" />
+
+            <TextView
+                android:id="@+id/txvNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:fontFamily="sans-serif-light"
+                android:text="Javier Lahoz"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="35dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imgEmpleado" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

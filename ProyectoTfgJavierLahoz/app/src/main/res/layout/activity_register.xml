@@ -4,124 +4,192 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/side_nav_bar"
     tools:context=".actividades.registro.RegisterActivity">
 
-    <EditText
-        android:id="@+id/edtNombre"
-        android:layout_width="match_parent"
+
+    <TextView
+        android:id="@+id/txvLogin2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="@string/lblNombre"
-        android:inputType="textPersonName"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/audiowide"
+        android:text="REGISTRARSE"
+        android:textColor="@color/white"
+        android:textSize="40dp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"></TextView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="350dp"
+        android:layout_height="480dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/white"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txvLogin2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/edtNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/lblNombre"
+                android:inputType="textPersonName"
+                android:textColor="@color/gris"
+                android:textColorHint="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/edtApellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/lblApellido"
+                android:inputType="textPersonName"
+                android:textColor="@color/gris"
+                android:textColorHint="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtNombre" />
+
+            <EditText
+                android:id="@+id/edtCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/lblEmail"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/gris"
+                android:textColorHint="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtApellido" />
+
+            <EditText
+                android:id="@+id/edtDni"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/lblDni"
+                android:inputType="textPersonName"
+                android:textColor="@color/gris"
+                android:textColorHint="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtCorreo" />
+
+            <EditText
+                android:id="@+id/edtContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/lblContraseña"
+                android:inputType="textPassword"
+                android:textColor="@color/gris"
+                android:textColorHint="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtDni" />
+
+            <EditText
+                android:id="@+id/edtConfContraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:backgroundTint="@color/purple_500"
+                android:ems="10"
+                android:hint="@string/lblConfContraseña"
+                android:inputType="textPassword"
+                android:textColor="@color/gris"
+                android:textColorHint="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtContraseña" />
+
+            <Button
+                android:id="@+id/btnRegistro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/boton_redondeado"
+                android:text="@string/lblRegistrarse"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtConfContraseña" />
+
+            <Button
+                android:id="@+id/btnAcceder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/boton_bordeado"
+                android:text="@string/lblAcceder"
+                android:textColor="@color/gris"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnRegistro" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="121dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/png_transparent_plus_sign_computer_icons_button_user_register_button_silhouette_internet_area"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edtApellido"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="@string/lblApellido"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtNombre" />
-
-    <EditText
-        android:id="@+id/edtCorreo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="@string/lblEmail"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtApellido" />
-
-    <EditText
-        android:id="@+id/edtDni"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="@string/lblDni"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtCorreo" />
-
-    <EditText
-        android:id="@+id/edtContraseña"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="@string/lblContraseña"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtDni" />
-
-    <EditText
-        android:id="@+id/edtConfContraseña"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:ems="10"
-        android:hint="@string/lblConfContraseña"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtContraseña" />
-
-    <Button
-        android:id="@+id/btnRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:background="@drawable/boton_redondeado"
-        android:text="@string/lblRegistrarse"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtConfContraseña" />
-
-    <Button
-        android:id="@+id/btnAcceder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:text="@string/lblAcceder"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnRegistro"
-        android:background="@drawable/boton_bordeado"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
