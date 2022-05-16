@@ -1,16 +1,21 @@
 package com.example.proyectotfgjavierlahoz.actividades.fragmentos.empleados;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.proyectotfgjavierlahoz.R;
+import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.DataActivity;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.UserActivity;
@@ -41,6 +47,8 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
 
     private DatabaseHelper bd;
     private ValidacionSesion validacion;
+
+    private Dialog dialog;
 
     private String dni;
 
@@ -90,22 +98,26 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
     public void onClick(View view) {
 
         if(view.getId() == R.id.fabAñadirDNI){
-            AlertDialog.Builder dialogoDNI = new AlertDialog.Builder(getActivity());
-            dialogoDNI.setTitle("Añadir DNI");
+            dialog = new Dialog(getActivity());
+            dialog.setContentView(R.layout.custom_dialog_dni);
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-            final EditText inputDni = new EditText(getActivity());
-            inputDni.setInputType(InputType.TYPE_CLASS_TEXT);
-            dialogoDNI.setView(inputDni);
+            dialog.setCancelable(false);
 
-            dialogoDNI.setCancelable(false);
-            dialogoDNI.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            EditText edtDni = dialog.findViewById(R.id.edtDni);
+
+            Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+            Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+
+            btnAceptar.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if(!validacion.comprobarDni(inputDni, getString(R.string.errorDni))){
+                public void onClick(View view) {
+                    if(!validacion.comprobarDni(edtDni, getString(R.string.errorDni))){
                         return;
                     }
-                    if(!bd.comprobarDni(inputDni.getText().toString())){
-                        bd.añadirDNI(inputDni.getText().toString());
+                    if(!bd.comprobarDni(edtDni.getText().toString())){
+                        bd.añadirDNI(edtDni.getText().toString());
                         Toast.makeText(getActivity(), getString(R.string.insertar_dni), Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getActivity(), getString(R.string.errorRegistro), Toast.LENGTH_LONG).show();
@@ -113,12 +125,13 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
                 }
             });
 
-            dialogoDNI.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            btnCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
+                public void onClick(View view) {
+                    dialog.dismiss();
                 }
-            }).create().show();
+            });
+            dialog.show();
         } else {
             dni = elementos.get(binding.rvListausuarios.getChildAdapterPosition(view)).getDni();
 

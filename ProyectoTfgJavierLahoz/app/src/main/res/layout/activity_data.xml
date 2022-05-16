@@ -218,10 +218,10 @@
         android:id="@id/btnGuardar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@android:drawable/ic_menu_save"
+        android:src="@drawable/ic_baseline_save_24"
+        app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -229,11 +229,24 @@
         android:id="@+id/btnCancelar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/purple_500"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
-        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:src="@drawable/ic_outline_cancel_24"
+        app:backgroundTint="@color/purple_500"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnBorrar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:backgroundTint="@color/rojo"
+        android:visibility="visible"
+        android:src="@drawable/ic_baseline_delete_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnGuardar"
+        app:layout_constraintHorizontal_bias="0.625"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText

@@ -59,7 +59,14 @@ public class PersonalFragment extends Fragment {
 
     private void establecerDatos(){
 
-        dni = LoginActivity.dni;
+
+
+        if(getArguments() != null){
+            dni = getArguments().getString("dni");
+        } else {
+            dni = LoginActivity.dni;
+        }
+
         Log.i("testbd", dni);
         empleado = databaseHelper.datosUsuario(dni);
 

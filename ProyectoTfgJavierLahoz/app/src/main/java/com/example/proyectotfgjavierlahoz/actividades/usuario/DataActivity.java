@@ -1,20 +1,27 @@
 package com.example.proyectotfgjavierlahoz.actividades.usuario;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -27,6 +34,8 @@ import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 
@@ -45,7 +54,10 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     private EditText edtApellido;
     private FloatingActionButton btnCancelar;
     private FloatingActionButton btnGuardar;
+    private FloatingActionButton btnBorrar;
     private Switch swcAdministrador;
+
+    private Dialog dialog;
 
     private Bundle datos;
     private String dni;
@@ -67,6 +79,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     private void escuchadorBotones(){
         btnCancelar.setOnClickListener(this);
         btnGuardar.setOnClickListener(this);
+        btnBorrar.setOnClickListener(this);
         editImagen.setOnClickListener(this);
     }
 
@@ -80,6 +93,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         txvDni = (TextView) findViewById(R.id.txvDni2);
         btnCancelar = (FloatingActionButton) findViewById(R.id.btnCancelar);
         btnGuardar = (FloatingActionButton) findViewById(R.id.btnGuardar);
+        btnBorrar = (FloatingActionButton) findViewById(R.id.btnBorrar);
         editImagen = (ImageView) findViewById(R.id.imgEdit);
         swcAdministrador = (Switch) findViewById(R.id.swcAdministrador);
     }
@@ -109,6 +123,12 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
             swcAdministrador.setChecked(false);
         }
 
+        Empleado admin = databaseHelper.datosUsuario(LoginActivity.dni);
+
+        if( admin.getAdministrador() == 1){
+            btnBorrar.setVisibility(View.VISIBLE);
+        }
+
         Bitmap imagen = databaseHelper.obtenerImagen(dni);
 
         if(imagen != null){
@@ -127,35 +147,79 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
                 back.putExtra("dni",dni);
                 startActivity(back);
                 break;
+            case R.id.btnBorrar:
+                borrarCuenta();
+                break;
             case R.id.btnGuardar:
-
-                empleado.setNombre(edtNombre.getText().toString());
-                empleado.setApellidos(edtApellido.getText().toString());
-                empleado.setCorreo(edtCorreo.getText().toString());
-                empleado.setDireccion(edtDireccion.getText().toString());
-                empleado.setMovil(edtMovil.getText().toString());
-
-                if(swcAdministrador.isChecked()){
-                    empleado.setAdministrador(1);
-                } else {
-                    empleado.setAdministrador(0);
-                }
-
-                if(imagenBitmap != null){
-                    databaseHelper.guardarImagen(imagenBitmap, dni);
-                }
-
-                databaseHelper.cambiarDatosUsuario(dni, empleado);
-
-                dni = empleado.getDni();
-                Intent main = new Intent(this, MainActivity.class);
-                main.putExtra("dni", dni);
-                startActivity(main);
+                guardarInformacion();
                 break;
             case R.id.imgEdit:
                 escogerImagen();
                 break;
         }
+    }
+
+    private void guardarInformacion() {
+        empleado.setNombre(edtNombre.getText().toString());
+        empleado.setApellidos(edtApellido.getText().toString());
+        empleado.setCorreo(edtCorreo.getText().toString());
+        empleado.setDireccion(edtDireccion.getText().toString());
+        empleado.setMovil(edtMovil.getText().toString());
+
+        if(swcAdministrador.isChecked()){
+            empleado.setAdministrador(1);
+        } else {
+            empleado.setAdministrador(0);
+        }
+
+        if(imagenBitmap != null){
+            databaseHelper.guardarImagen(imagenBitmap, dni);
+        }
+
+        databaseHelper.cambiarDatosUsuario(dni, empleado);
+
+        dni = empleado.getDni();
+        Intent main = new Intent(this, MainActivity.class);
+        startActivity(main);
+    }
+
+    private void borrarCuenta(){
+        dialog = new Dialog(DataActivity.this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.setCancelable(false);
+
+        TextView txvTitulo = dialog.findViewById(R.id.txvDialog);
+        TextView txvTexto = dialog.findViewById(R.id.txvDialog2);
+        txvTitulo.setText("Borrar cuenta");
+        txvTexto.setText("¿Seguro que desea borrar la cuenta?");
+
+        ImageView imgdialog = dialog.findViewById(R.id.imgDialog);
+        imgdialog.setImageResource(R.drawable.ic_baseline_delete_24);
+
+        Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+        Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseHelper.eliminarUsuario(dni);
+                Toast.makeText(DataActivity.this,getString(R.string.menu_cuenta_borrada), Toast.LENGTH_LONG).show();
+                Intent inicioSesion = new Intent(DataActivity.this,LoginActivity.class);
+                startActivity(inicioSesion);
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
     }
 
     private void escogerImagen(){

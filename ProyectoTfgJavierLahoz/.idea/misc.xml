@@ -23,17 +23,20 @@
         <entry key="..\:/Users/Javi/AndroidStudioProjects/ProyectoTfgJavierLahoz/app/src/main/res/layout/nav_header_main.xml" value="0.22" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/ProyectoTfgJavierLahoz/app/src/main/res/menu/activity_main_drawer.xml" value="0.31927083333333334" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/ProyectoTfgJavierLahoz/app/src/main/res/menu/main.xml" value="0.3072916666666667" />
+        <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/drawable-v24/boton_blanco.xml" value="0.3525" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/drawable-v24/boton_bordeado.xml" value="0.292" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/drawable-v24/boton_redondeado.xml" value="0.346" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/drawable/side_nav_bar.xml" value="0.346" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/drawable/switch_color.xml" value="0.346" />
-        <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/activity_data.xml" value="0.22" />
+        <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/activity_data.xml" value="0.25" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/activity_login.xml" value="0.22" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/activity_user.xml" value="0.25" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/app_bar_main.xml" value="0.18645833333333334" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/content_main.xml" value="0.18645833333333334" />
+        <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/custom_dialog.xml" value="0.33" />
+        <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/custom_dialog_dni.xml" value="0.3912337662337662" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/fragment_empleados.xml" value="0.25" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/fragment_inicio.xml" value="0.25" />
         <entry key="..\:/Users/Javi/AndroidStudioProjects/TFG/ProyectoTfgJavierLahoz/app/src/main/res/layout/fragment_inicio2.xml" value="0.12" />

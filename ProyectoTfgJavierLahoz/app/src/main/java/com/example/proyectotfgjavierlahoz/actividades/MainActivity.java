@@ -1,12 +1,16 @@
 package com.example.proyectotfgjavierlahoz.actividades;
 
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +25,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.proyectotfgjavierlahoz.R;
+import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.LaboralFragment;
+import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.PersonalFragment;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.databinding.ActivityMainBinding;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
@@ -34,15 +40,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private String dni;
 
-    TextView txvNombre;
-    TextView txvCorreo;
-    Button btnCerrarSesion;
-    Button btnBorrarCuenta;
-    ImageView imagenUsuario;
+    private Dialog dialog;
 
-    Empleado empleado;
-    DatabaseHelper databaseHelper;
-    Bundle datos;
+    private TextView txvNombre;
+    private TextView txvCorreo;
+    private Button btnCerrarSesion;
+    private Button btnBorrarCuenta;
+    private ImageView imagenUsuario;
+
+    private Empleado empleado;
+    private DatabaseHelper databaseHelper;
 
 
     @Override
@@ -80,8 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         establecerDatosUsuario();
         escuchadorBotones();
 
-
-
     }
 
     @Override
@@ -109,12 +114,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void inicializarObjetos(){
         databaseHelper = new DatabaseHelper(this);
         empleado = new Empleado();
-        datos = getIntent().getExtras();
     }
 
     private void establecerDatosUsuario(){
-        //dni = datos.getString("dni");
         dni = LoginActivity.dni;
+
+        Log.i("testdni",dni);
         empleado = databaseHelper.datosUsuario(dni);
 
         txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
@@ -135,45 +140,77 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void dialogoCerrarSesion(){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Cerrar sesion");
-        alertDialogBuilder.setMessage("¿Seguro que desea cerrar sesion?");
-        alertDialogBuilder.setCancelable(false)
-                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent loginActivity = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(loginActivity);
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                }).create().show();
+
+        dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.setCancelable(false);
+
+        TextView txvTitulo = dialog.findViewById(R.id.txvDialog);
+        TextView txvTexto = dialog.findViewById(R.id.txvDialog2);
+        txvTitulo.setText("Cerrar sesion");
+        txvTexto.setText("¿Seguro que desea cerrar sesion?");
+
+
+        Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+        Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent loginActivity = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(loginActivity);
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     private void dialogoBorrarCuenta(){
-        AlertDialog.Builder dialogBorrarCuenta = new AlertDialog.Builder(this);
-        dialogBorrarCuenta.setTitle("Borrar cuenta")
-                .setMessage("¿Seguro que desea borrar la cuenta?")
-                .setCancelable(false)
-                .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        databaseHelper.eliminarUsuario(dni);
-                        Toast.makeText(MainActivity.this,getString(R.string.menu_cuenta_borrada), Toast.LENGTH_LONG).show();
-                        Intent inicioSesion = new Intent(MainActivity.this,LoginActivity.class);
-                        startActivity(inicioSesion);
-                    }
-                })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                }).create().show();
+
+        dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.custom_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.setCancelable(false);
+
+        TextView txvTitulo = dialog.findViewById(R.id.txvDialog);
+        TextView txvTexto = dialog.findViewById(R.id.txvDialog2);
+        txvTitulo.setText("Borrar cuenta");
+        txvTexto.setText("¿Seguro que desea borrar la cuenta?");
+
+        ImageView imgdialog = dialog.findViewById(R.id.imgDialog);
+        imgdialog.setImageResource(R.drawable.ic_baseline_delete_24);
+
+        Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
+        Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                databaseHelper.eliminarUsuario(dni);
+                Toast.makeText(MainActivity.this,getString(R.string.menu_cuenta_borrada), Toast.LENGTH_LONG).show();
+                Intent inicioSesion = new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(inicioSesion);
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override
