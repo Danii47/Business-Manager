@@ -1,21 +1,16 @@
 package com.example.proyectotfgjavierlahoz.actividades.fragmentos.empleados;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,7 +19,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.proyectotfgjavierlahoz.R;
-import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.DataActivity;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.UserActivity;
@@ -32,7 +26,7 @@ import com.example.proyectotfgjavierlahoz.adaptadores.UserListAdapter;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentEmpleadosBinding;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
-import com.example.proyectotfgjavierlahoz.validadores.ValidacionSesion;
+import com.example.proyectotfgjavierlahoz.validadores.ValidacionEntradas;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +40,7 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
     private List<Empleado> elementos;
 
     private DatabaseHelper bd;
-    private ValidacionSesion validacion;
+    private ValidacionEntradas validacion;
 
     private Dialog dialog;
 
@@ -61,7 +55,8 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
         View root = binding.getRoot();
 
         inicializarObjetos();
-
+        inicializarEscuchadores();
+        establecerDatosAdmin();
 
 
         return root;
@@ -79,19 +74,21 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
 
         LinearLayoutManager manager = new LinearLayoutManager(getContext());
         bd = new DatabaseHelper(getContext());
-        validacion = new ValidacionSesion(getActivity());
+        validacion = new ValidacionEntradas(getActivity());
 
         binding.rvListausuarios.setLayoutManager(manager);
 
         elementos = bd.obtenerUsuarios();
         adapter = new UserListAdapter(elementos);
+
+    }
+
+    private void inicializarEscuchadores(){
         adapter.setOnClickListener(this);
         adapter.setOnLongClickListener(this);
         binding.fabAAdirDNI.setOnClickListener(this);
         binding.rvListausuarios.setAdapter(adapter);
         binding.svEmpleado.setOnQueryTextListener(this);
-
-        datosAdministrador();
     }
 
     @Override
@@ -165,7 +162,7 @@ public class EmpleadosFragment extends Fragment implements View.OnClickListener,
         return false;
     }
 
-    private void datosAdministrador() {
+    private void establecerDatosAdmin() {
         if(LoginActivity.administrador == true){
             binding.fabAAdirDNI.show();
         }

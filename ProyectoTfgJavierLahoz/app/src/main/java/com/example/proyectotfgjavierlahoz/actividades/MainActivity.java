@@ -1,7 +1,6 @@
 package com.example.proyectotfgjavierlahoz.actividades;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
@@ -25,8 +23,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.proyectotfgjavierlahoz.R;
-import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.LaboralFragment;
-import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.PersonalFragment;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.databinding.ActivityMainBinding;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
@@ -125,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
         txvCorreo.setText(empleado.getCorreo());
 
-        Bitmap imagen = databaseHelper.obtenerImagen(dni);
+        Bitmap imagen = databaseHelper.obtenerImagenEmpleado(dni);
         if(imagen != null){
             imagenUsuario.setImageBitmap(imagen);
         } else {

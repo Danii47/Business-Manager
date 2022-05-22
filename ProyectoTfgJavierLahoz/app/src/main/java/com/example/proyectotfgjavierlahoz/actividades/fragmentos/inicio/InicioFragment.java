@@ -79,7 +79,7 @@ public class InicioFragment extends Fragment implements View.OnClickListener {
 
         binding.txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
 
-        Bitmap imagen = databaseHelper.obtenerImagen(dni);
+        Bitmap imagen = databaseHelper.obtenerImagenEmpleado(dni);
 
         if(imagen != null){
             binding.imgEmpleado.setImageBitmap(imagen);

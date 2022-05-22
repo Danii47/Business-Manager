@@ -1,6 +1,5 @@
 package com.example.proyectotfgjavierlahoz.adaptadores;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,11 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserViewHolder> implements View.OnClickListener, View.OnLongClickListener {
 
@@ -98,7 +93,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserVi
             super(view);
             imgUsuario = (ImageView) view.findViewById(R.id.imgEmpleado);
             txvNombre = (TextView) view.findViewById(R.id.txvNombre);
-            txvEmail = (TextView) view.findViewById(R.id.txvEmail);
+            txvEmail = (TextView) view.findViewById(R.id.txvEncargado);
             txvMovil = (TextView) view.findViewById(R.id.txvMovil);
         }
     }

@@ -48,4 +48,9 @@
     <string name="insertar_dni">DNI insertado correctamente</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Fragmento Departamentos -->
+    <string name="insertar_dep">Departamento insertado correctamente</string>
+    <string name="insertar_dep_error">Ya existe departamento con el codigo introducido</string>
+    <string name="dep_codigo_error">El campo codigo esta vacio</string>
 </resources>

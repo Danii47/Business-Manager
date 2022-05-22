@@ -20,33 +20,26 @@
             android:layout_height="80dp"
             android:layout_marginRight="10dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/user_logo"
-            tools:ignore="InvalidId">
-        </ImageView>
+            app:srcCompat="@drawable/ic_outline_home_work_24"
+            tools:ignore="InvalidId"></ImageView>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/txvNombre"
+                android:id="@+id/txvDepartamento"
                 android:textColor="@color/purple_500"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
-                android:text="Javier Lahoz"
+                android:text="Produccion"
                 tools:ignore="InvalidId">
             </TextView>
             <TextView
                 android:id="@+id/txvEncargado"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="jlahoz2002@gmail.com">
-            </TextView>
-            <TextView
-                android:id="@+id/txvMovil"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="638294112">
+                android:text="Pepe Perez">
             </TextView>
         </LinearLayout>
 

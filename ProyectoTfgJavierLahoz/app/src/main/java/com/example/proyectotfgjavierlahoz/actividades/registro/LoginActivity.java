@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
-import com.example.proyectotfgjavierlahoz.validadores.ValidacionSesion;
+import com.example.proyectotfgjavierlahoz.validadores.ValidacionEntradas;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +24,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     Button btnAcceder;
     Button btnRegistro;
 
-    ValidacionSesion validacionSesion;
+    ValidacionEntradas validacionSesion;
     DatabaseHelper databaseHelper;
 
     public static boolean administrador = false;
@@ -49,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void inicializarObjetos(){
-        validacionSesion = new ValidacionSesion(this);
+        validacionSesion = new ValidacionEntradas(this);
         databaseHelper = new DatabaseHelper(this);
     }
 

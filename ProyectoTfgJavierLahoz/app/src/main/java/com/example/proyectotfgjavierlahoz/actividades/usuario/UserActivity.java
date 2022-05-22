@@ -3,15 +3,10 @@ package com.example.proyectotfgjavierlahoz.actividades.usuario;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,16 +19,12 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.proyectotfgjavierlahoz.R;
-import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.InicioFragment;
 import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.LaboralFragment;
 import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.PersonalFragment;
-import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,12 +33,7 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView imgEmpleado;
     private TextView txvNombre;
-    private TextView txvDni;
-    private TextView txvEmail;
-    private TextView txvNumero;
-    private TextView txvDireccion;
     private FloatingActionButton btnCorreo;
-    private Switch swcAdministrador;
     private FloatingActionButton btnLlamar;
     private Bundle info;
 
@@ -118,8 +104,8 @@ public class UserActivity extends AppCompatActivity implements View.OnClickListe
 
         txvNombre.setText(empleado.getNombre() + " " + empleado.getApellidos());
 
-        if(bd.obtenerImagen(dni) != null){
-            imgEmpleado.setImageBitmap(bd.obtenerImagen(dni));
+        if(bd.obtenerImagenEmpleado(dni) != null){
+            imgEmpleado.setImageBitmap(bd.obtenerImagenEmpleado(dni));
         } else {
             imgEmpleado.setImageResource(R.drawable.user_logo);
         }

@@ -8,11 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
-import android.widget.ListAdapter;
 
 import com.example.proyectotfgjavierlahoz.R;
+import com.example.proyectotfgjavierlahoz.modelos.Departamento;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 
 import java.io.ByteArrayOutputStream;
@@ -47,11 +46,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_DEP_CODIGO = "departamento_codigo";
     private static final String COL_DEP_NOMBRE = "departamento_nombre";
     private static final String COL_DEP_ENCARGADO = "departamento_encargado";
+    private static final String COL_DEP_IMAGEN = "departamento_imagen";
 
     private static final String COL_DNI_DNI = "dni_empleado";
 
     private String CREAR_TABLA_DEPARTAMENTOS = "Create table " + TABLA_DEPARTAMENTOS + "(" + COL_DEP_CODIGO  + " TEXT PRIMARY KEY," +
-            COL_DEP_NOMBRE + " TEXT NOT NULL, " + COL_DEP_ENCARGADO + " TEXT )";
+            COL_DEP_NOMBRE + " TEXT NOT NULL, " + COL_DEP_ENCARGADO + " TEXT, " + COL_DEP_IMAGEN + " blob)";
 
     private String CREAR_TABLA_EMPLEADOS = "Create table " + TABLA_EMPLEADOS + " (" + COL_EMP_DNI + " TEXT PRIMARY KEY," +
             COL_EMP_NOMBRE + " TEXT NOT NULL, " + COL_EMP_APELLIDOS + " TEXT NOT NULL," +
@@ -167,11 +167,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             empleado.setDepartamento(cursor.getString(cursor.getColumnIndex(COL_EMP_DPTO)));
             empleado.setPuesto(cursor.getString(cursor.getColumnIndex(COL_EMP_PUESTO)));
             empleado.setAdministrador(cursor.getInt(cursor.getColumnIndex(COL_EMP_ADMIN)));
+            empleado.setDepartamento(cursor.getString(cursor.getColumnIndex(COL_EMP_DPTO)));
         }
         return empleado;
     }
 
-    public void guardarImagen(Bitmap imagenGuardar, String dni){
+    public void guargarImagenEmpleado(Bitmap imagenGuardar, String dni){
 
         SQLiteDatabase bd = this.getWritableDatabase();
 
@@ -188,7 +189,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         bd.close();
     }
 
-    public Bitmap obtenerImagen(String dni){
+    public Bitmap obtenerImagenEmpleado(String dni){
         SQLiteDatabase bd = this.getReadableDatabase();
         Bitmap imagen = null;
 
@@ -218,6 +219,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         datos.put(COL_EMP_DIREC, empleado.getDireccion());
         datos.put(COL_EMP_MOVIL, empleado.getMovil());
         datos.put(COL_EMP_ADMIN, empleado.getAdministrador());
+        datos.put(COL_EMP_PUESTO, empleado.getPuesto());
 
         bd.update(TABLA_EMPLEADOS, datos, COL_EMP_DNI + " = '" + dni + "'", null);
     }
@@ -262,6 +264,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return listaEmpleados;
     }
 
+    @SuppressLint("Range")
+    public List<Empleado> obtenerUsuarios(String codigo){
+
+        Bitmap imagen = null;
+        Log.i("testbdemp", codigo);
+        List<Empleado> listaEmpleados = new ArrayList<>();
+        SQLiteDatabase bd = this.getReadableDatabase();
+
+        String[] columnas = {
+                COL_EMP_DNI, COL_EMP_NOMBRE, COL_EMP_APELLIDOS, COL_EMP_CORREO, COL_EMP_IMAGEN, COL_EMP_MOVIL
+        };
+
+        Cursor cursor = bd.query(TABLA_EMPLEADOS, columnas, COL_EMP_DPTO + " = " + "'" + codigo + "'", null, null, null, null);
+        Log.i("testbdemp",String.valueOf(cursor.getCount()));
+        if(cursor.moveToFirst()){
+            do {
+                Empleado empleado = new Empleado();
+                empleado.setDni(cursor.getString(cursor.getColumnIndex(COL_EMP_DNI)));
+                empleado.setNombre(cursor.getString(cursor.getColumnIndex(COL_EMP_NOMBRE)));
+                empleado.setApellidos(cursor.getString(cursor.getColumnIndex(COL_EMP_APELLIDOS)));
+                empleado.setCorreo(cursor.getString(cursor.getColumnIndex(COL_EMP_CORREO)));
+                empleado.setMovil(cursor.getString(cursor.getColumnIndex(COL_EMP_MOVIL)));
+
+                byte[] bytesImagen = cursor.getBlob(cursor.getColumnIndex(COL_EMP_IMAGEN));
+
+                if(bytesImagen != null){
+                    imagen = BitmapFactory.decodeByteArray(bytesImagen, 0, bytesImagen.length);
+                } else {
+                    imagen = BitmapFactory.decodeResource(this.context.getResources(),R.drawable.user_logo);
+                }
+                empleado.setImagen(imagen);
+                listaEmpleados.add(empleado);
+            }while(cursor.moveToNext());
+            cursor.close();
+            bd.close();
+        }
+        return listaEmpleados;
+    }
+
     public void añadirDNI(String dni){
         SQLiteDatabase bd = this.getWritableDatabase();
 
@@ -295,6 +336,172 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         bd.delete(TABLA_EMPLEADOS, COL_EMP_DNI + " = " + "'" + dni + "'", null);
         bd.delete(TABLA_DNI, COL_DNI_DNI + " = " + "'" + dni + "'", null);
+    }
+
+    @SuppressLint("Range")
+    public List<Departamento> obtenerDepartamentos(){
+
+        Bitmap imagen = null;
+
+        List<Departamento> listaDepartamentos = new ArrayList<>();
+        SQLiteDatabase bd = this.getReadableDatabase();
+
+        String[] columnas = {
+                COL_DEP_CODIGO, COL_DEP_NOMBRE, COL_DEP_ENCARGADO, COL_DEP_IMAGEN
+        };
+
+        Cursor cursor = bd.query(TABLA_DEPARTAMENTOS, columnas, null, null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            do {
+                Departamento departamento = new Departamento();
+                departamento.setCodigo(cursor.getString(cursor.getColumnIndex(COL_DEP_CODIGO)));
+                departamento.setNombre(cursor.getString(cursor.getColumnIndex(COL_DEP_NOMBRE)));
+                departamento.setEncargado(cursor.getString(cursor.getColumnIndex(COL_DEP_ENCARGADO)));
+                byte[] bytesImagen = cursor.getBlob(cursor.getColumnIndex(COL_DEP_IMAGEN));
+
+                if(bytesImagen != null){
+                    imagen = BitmapFactory.decodeByteArray(bytesImagen, 0, bytesImagen.length);
+                } else {
+                    imagen = BitmapFactory.decodeResource(this.context.getResources(),R.drawable.ic_outline_home_work_24);
+                }
+
+                departamento.setImagen(imagen);
+                listaDepartamentos.add(departamento);
+            }while(cursor.moveToNext());
+            cursor.close();
+            bd.close();
+        }
+        return listaDepartamentos;
+    }
+
+    public void añadirDepartamento(Departamento dep){
+        SQLiteDatabase bd = this.getWritableDatabase();
+        ContentValues datos = new ContentValues();
+        datos.put(COL_DEP_CODIGO, dep.getCodigo());
+        datos.put(COL_DEP_NOMBRE, dep.getNombre());
+        datos.put(COL_DEP_ENCARGADO, dep.getEncargado());
+
+        bd.insert(TABLA_DEPARTAMENTOS, null, datos);
+        bd.close();
+    }
+
+    public boolean comprobarDepartamento(String codigo){
+
+        SQLiteDatabase bd = this.getReadableDatabase();
+        boolean depEncontrado = false;
+
+        String query = "Select * from " + TABLA_DEPARTAMENTOS + " where " + COL_DEP_CODIGO + " = ?";
+
+        String[] columnas = {COL_EMP_DNI};
+        String consulta = COL_EMP_DNI  + " = ?";
+        String[] argumentos = {codigo};
+
+        Cursor cursor = bd.rawQuery(query, argumentos);
+
+        if(cursor.getCount() >= 1){
+            depEncontrado = true;
+        }
+        return depEncontrado;
+    }
+
+    @SuppressLint("Range")
+    public Departamento datosDepartamento(String codigo){
+
+        SQLiteDatabase bd = this.getReadableDatabase();
+        Departamento departamento =  null;
+
+        String consulta = "Select * from " + TABLA_DEPARTAMENTOS  + " where " + COL_DEP_CODIGO + " = ?";
+        String [] argumentos = {codigo};
+        Log.i("testt", argumentos[0]);
+        Cursor cursor = bd.rawQuery(consulta, argumentos);
+        if(cursor.moveToFirst()){
+            departamento = new Departamento();
+            departamento.setCodigo(cursor.getString(cursor.getColumnIndex(COL_DEP_CODIGO)));
+            departamento.setNombre(cursor.getString(cursor.getColumnIndex(COL_DEP_NOMBRE)));
+            departamento.setEncargado(cursor.getString(cursor.getColumnIndex(COL_DEP_ENCARGADO)));
+        }
+        return departamento;
+    }
+
+    public void cambiarDatosDepartamento(String codigo, Departamento departamento){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        ContentValues datos = new ContentValues();
+
+        datos.put(COL_DEP_NOMBRE, departamento.getNombre());
+        datos.put(COL_DEP_ENCARGADO, departamento.getEncargado());
+
+        bd.update(TABLA_DEPARTAMENTOS, datos, COL_DEP_CODIGO + " = '" + codigo + "'", null);
+    }
+
+    public void eliminarDepartamento(String codigo){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        bd.delete(TABLA_DEPARTAMENTOS, COL_DEP_CODIGO + " = " + "'" + codigo + "'", null);
+
+    }
+
+    public void guardarImagenDep(Bitmap imagenGuardar, String codigo){
+
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        baos = new ByteArrayOutputStream();
+        imagenGuardar.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bytesImagen = baos.toByteArray();
+
+        ContentValues datos = new ContentValues();
+        datos.put(COL_DEP_IMAGEN, bytesImagen);
+
+        int rows = bd.update(TABLA_DEPARTAMENTOS, datos,COL_DEP_CODIGO + " = '"+ codigo + "'", null);
+
+        Log.i("test2", String.valueOf(rows));
+        bd.close();
+    }
+
+    public Bitmap obtenerImagenDep(String codigo){
+        SQLiteDatabase bd = this.getReadableDatabase();
+        Bitmap imagen = null;
+
+        String consulta = "Select " + COL_DEP_IMAGEN + " from " + TABLA_DEPARTAMENTOS  + " where " + COL_DEP_CODIGO + " = ?";
+        String [] argumentos = {codigo};
+
+        Cursor cursor = bd.rawQuery(consulta, argumentos);
+
+        if(cursor.moveToFirst()){
+            byte[] bytesImagen = cursor.getBlob(0);
+            if(bytesImagen != null){
+                imagen = BitmapFactory.decodeByteArray(bytesImagen, 0, bytesImagen.length);
+            }
+        }
+        return imagen;
+    }
+
+    public void establecerEmpleadoDep(String codDep, String dni){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        ContentValues datos = new ContentValues();
+
+        datos.put(COL_EMP_DPTO, codDep);
+
+        bd.update(TABLA_EMPLEADOS, datos, COL_EMP_DNI + " = '" + dni + "'", null);
+    }
+
+    public String obtenerDepCod(String codigo){
+        SQLiteDatabase bd = this.getReadableDatabase();
+
+        String nombreDep = "";
+
+        String consulta = "Select " + COL_DEP_NOMBRE + " from " + TABLA_DEPARTAMENTOS  + " inner join " + TABLA_EMPLEADOS + " on " + TABLA_EMPLEADOS + "." + COL_EMP_DPTO + " = " +
+                TABLA_DEPARTAMENTOS + "." + COL_DEP_CODIGO  + " where " + COL_DEP_CODIGO + " = ?";
+        String [] argumentos = {codigo};
+
+        Cursor cursor = bd.rawQuery(consulta, argumentos);
+
+        if(cursor.moveToFirst()){
+            nombreDep = cursor.getString(0);
+        }
+        return nombreDep;
     }
 }
 

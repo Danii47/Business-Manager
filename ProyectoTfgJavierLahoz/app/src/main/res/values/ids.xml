@@ -4,4 +4,5 @@
     <item name="btnGuardar" type="id" />
     <item name="llamar" type="id" />
     <item name="correo" type="id" />
+    <item name="fabEditar" type="id" />
 </resources>

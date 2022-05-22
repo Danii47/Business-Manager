@@ -6,6 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".actividades.usuario.DataActivity">
 
+    <EditText
+        android:id="@+id/edtPuesto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=""
+        android:textSize="15dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txvPuesto"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imgEmpleado"
         android:layout_width="100dp"
@@ -31,7 +45,7 @@
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/txvDni"
+        android:id="@+id/txvCodigo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -46,7 +60,7 @@
         android:id="@+id/txvDireccion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         android:fontFamily="monospace"
         android:text="Direccion"
         android:textSize="15dp"
@@ -58,16 +72,16 @@
         android:id="@+id/txvMovil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="monospace"
         android:text="Movil"
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/txvEmail" />
+        app:layout_constraintTop_toBottomOf="@+id/txvEncargado" />
 
     <TextView
-        android:id="@+id/txvEmail"
+        android:id="@+id/txvEncargado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -76,7 +90,7 @@
         android:textSize="15dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/txvDni" />
+        app:layout_constraintTop_toBottomOf="@+id/txvCodigo" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -93,6 +107,7 @@
         app:layout_constraintGuide_end="50dp" />
 
     <View
+        android:id="@+id/view3"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
@@ -140,20 +155,6 @@
         app:layout_constraintTop_toBottomOf="@+id/txvDireccion" />
 
     <TextView
-        android:id="@+id/txvDepartamento2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="monospace"
-        android:text="RRHH"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.993"
-        app:layout_constraintStart_toEndOf="@+id/txvDepartamento"
-        app:layout_constraintTop_toBottomOf="@+id/txvInfoLaboral" />
-
-    <TextView
         android:id="@+id/txvDni2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -162,14 +163,42 @@
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.992"
-        app:layout_constraintStart_toEndOf="@+id/txvDni"
+        app:layout_constraintStart_toEndOf="@+id/txvCodigo"
         app:layout_constraintTop_toBottomOf="@+id/txvInfoPersonal" />
+
+    <TextView
+        android:id="@+id/txvAdministrador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="monospace"
+        android:text="Administrador"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/txvPuesto" />
+
+    <Switch
+        android:id="@+id/swcAdministrador"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginTop="12dp"
+        android:checked="true"
+        android:clickable="false"
+        android:thumbTint="@color/switch_color"
+        android:trackTint="@color/switch_color"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/txvAdministrador"
+        app:layout_constraintTop_toBottomOf="@+id/edtPuesto"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txvPuesto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="monospace"
         android:text="Puesto"
         android:textSize="15dp"
@@ -178,35 +207,10 @@
         app:layout_constraintTop_toBottomOf="@+id/txvDepartamento" />
 
     <TextView
-        android:id="@+id/txvAdministrador"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="monospace"
-        android:text="Administrador"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/txvPuesto" />
-
-    <TextView
-        android:id="@+id/txvPuesto2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:fontFamily="monospace"
-        android:text="Empleado"
-        android:textSize="15dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline3"
-        app:layout_constraintHorizontal_bias="0.994"
-        app:layout_constraintStart_toEndOf="@+id/txvPuesto"
-        app:layout_constraintTop_toBottomOf="@+id/txvDepartamento2" />
-
-    <TextView
         android:id="@+id/txvDepartamento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:fontFamily="monospace"
         android:text="Departamento"
         android:textSize="15dp"
@@ -241,9 +245,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:backgroundTint="@color/rojo"
-        android:visibility="visible"
         android:src="@drawable/ic_baseline_delete_24"
+        android:visibility="visible"
+        app:backgroundTint="@color/rojo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnGuardar"
         app:layout_constraintHorizontal_bias="0.625"
@@ -289,7 +293,7 @@
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/txvDni"
+        app:layout_constraintStart_toEndOf="@+id/txvCodigo"
         app:layout_constraintTop_toBottomOf="@+id/txvDni2" />
 
     <EditText
@@ -304,7 +308,7 @@
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.933"
-        app:layout_constraintStart_toEndOf="@+id/txvDni"
+        app:layout_constraintStart_toEndOf="@+id/txvCodigo"
         app:layout_constraintTop_toBottomOf="@+id/edtEmail" />
 
     <EditText
@@ -319,24 +323,20 @@
         android:textSize="15dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="0.933"
-        app:layout_constraintStart_toEndOf="@+id/txvDni"
+        app:layout_constraintStart_toEndOf="@+id/txvCodigo"
         app:layout_constraintTop_toBottomOf="@+id/edtMovil" />
 
-    <Switch
-        android:id="@+id/swcAdministrador"
+    <Spinner
+        android:id="@+id/spDep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="85dp"
         android:layout_marginTop="12dp"
-        android:checked="true"
-        android:clickable="false"
-        android:thumbTint="@color/switch_color"
-        android:trackTint="@color/switch_color"
+
+        android:layout_marginRight="-13dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/txvAdministrador"
-        app:layout_constraintTop_toBottomOf="@+id/txvPuesto2"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toEndOf="@+id/txvDepartamento"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

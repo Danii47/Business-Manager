@@ -1,29 +1,34 @@
-package com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio;
+package com.example.proyectotfgjavierlahoz.actividades.fragmentos.departamentos;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
+import com.example.proyectotfgjavierlahoz.databinding.FragmentDepEmpBinding;
+import com.example.proyectotfgjavierlahoz.databinding.FragmentDepInfoBinding;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentLaboralBinding;
-import com.example.proyectotfgjavierlahoz.databinding.FragmentPersonalBinding;
+import com.example.proyectotfgjavierlahoz.modelos.Departamento;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 
+import org.w3c.dom.Text;
 
-public class LaboralFragment extends Fragment {
+public class DepInfoFragment extends Fragment {
 
-    private FragmentLaboralBinding binding;
+    private FragmentDepInfoBinding binding;
 
-    private String dni;
+    private String codigo;
 
+    private Departamento departamento;
     private DatabaseHelper bd;
-    private Empleado empleado;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -35,7 +40,7 @@ public class LaboralFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        binding = FragmentLaboralBinding.inflate(inflater, container, false);
+        binding = FragmentDepInfoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         inicializarObjetos();
@@ -45,31 +50,19 @@ public class LaboralFragment extends Fragment {
     }
 
     private void inicializarObjetos(){
+        departamento = new Departamento();
         bd = new DatabaseHelper(getContext());
-        empleado = new Empleado();
+
     }
 
     private void establecerDatos(){
 
-        if(getArguments() != null){
-            dni = getArguments().getString("dni");
-        } else {
-            dni = LoginActivity.dni;
-        }
+        codigo = getArguments().getString("codigo");
 
-        empleado = bd.datosUsuario(dni);
-        binding.txvPuesto2.setText(empleado.getPuesto());
+        departamento = bd.datosDepartamento(codigo);
 
-        if(empleado.getDepartamento() != null){
-            String nombreDep = bd.obtenerDepCod(empleado.getDepartamento());
-            binding.txvDepartamento2.setText(nombreDep);
-        }
-
-        if(LoginActivity.administrador == true){
-            binding.swcAdministrador2.setChecked(true);
-        } else {
-            binding.swcAdministrador2.setChecked(false);
-        }
+        binding.txvCodigo2.setText(departamento.getCodigo());
+        binding.txvEncargado2.setText(departamento.getEncargado());
 
     }
 }

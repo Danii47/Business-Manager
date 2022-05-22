@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
-import com.example.proyectotfgjavierlahoz.validadores.ValidacionSesion;
+import com.example.proyectotfgjavierlahoz.validadores.ValidacionEntradas;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -25,7 +25,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button btnAcceder;
     Button btnRegistro;
 
-    ValidacionSesion validacionSesion;
+    ValidacionEntradas validacionSesion;
     DatabaseHelper dataBaseHelper;
     Empleado empleado;
 
@@ -51,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void inicializarObjetos(){
-        validacionSesion = new ValidacionSesion(this);
+        validacionSesion = new ValidacionEntradas(this);
         dataBaseHelper = new DatabaseHelper(this);
         empleado = new Empleado();
 

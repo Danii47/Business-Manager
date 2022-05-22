@@ -1,33 +1,30 @@
 package com.example.proyectotfgjavierlahoz.actividades.usuario;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
@@ -38,37 +35,25 @@ import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class DataActivity extends AppCompatActivity implements View.OnClickListener {
+public class DataDepActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DatabaseHelper databaseHelper;
-    private Empleado empleado;
+    private Departamento departamento;
 
-    private ImageView imagenUsuario;
-    private ImageView editImagen;
+    private ImageView imgDepartamento;
+    private ImageView imgEdit;
     private EditText edtNombre;
-    private TextView txvDni;
-    private EditText edtCorreo;
-    private EditText edtMovil;
-    private EditText edtDireccion;
-    private EditText edtApellido;
-    private EditText edtPuesto;
-    private FloatingActionButton btnCancelar;
+    private EditText edtEncargado;
+
     private FloatingActionButton btnGuardar;
+    private FloatingActionButton btnCancelar;
     private FloatingActionButton btnBorrar;
-    private Switch swcAdministrador;
-    private Spinner spDepartamento;
-
-    private List<String> nombreDeps;
-
-    private List<Departamento> departamentos;
 
     private Dialog dialog;
 
     private Bundle datos;
-    private String dni;
+    private String codigo;
 
     Uri rutaImagen;
     Bitmap imagenBitmap;
@@ -76,109 +61,53 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_data);
+        setContentView(R.layout.activity_data_dep);
 
         inicializarVistas();
         inicializarObjetos();
         escuchadorBotones();
         establecerDatos();
-
     }
 
     private void escuchadorBotones(){
         btnCancelar.setOnClickListener(this);
         btnGuardar.setOnClickListener(this);
         btnBorrar.setOnClickListener(this);
-        editImagen.setOnClickListener(this);
+        imgEdit.setOnClickListener(this);
     }
 
     private void inicializarVistas(){
-        imagenUsuario = (ImageView) findViewById(R.id.imgEmpleado);
+        imgDepartamento = (ImageView) findViewById(R.id.imgDepartamento);
         edtNombre = (EditText) findViewById(R.id.edtNombre);
-        edtApellido = (EditText) findViewById(R.id.edtApellido);
-        edtCorreo = (EditText) findViewById(R.id.edtEmail);
-        edtMovil = (EditText) findViewById(R.id.edtMovil);
-        edtDireccion = (EditText) findViewById(R.id.edtDireccion);
-        txvDni = (TextView) findViewById(R.id.txvDni2);
-        btnCancelar = (FloatingActionButton) findViewById(R.id.btnCancelar);
+        edtEncargado = (EditText) findViewById(R.id.edtEncargado);
+        imgEdit = (ImageView) findViewById(R.id.imgEdit);
         btnGuardar = (FloatingActionButton) findViewById(R.id.btnGuardar);
         btnBorrar = (FloatingActionButton) findViewById(R.id.btnBorrar);
-        editImagen = (ImageView) findViewById(R.id.imgEdit);
-        swcAdministrador = (Switch) findViewById(R.id.swcAdministrador);
-        spDepartamento = (Spinner) findViewById(R.id.spDep);
-        edtPuesto = (EditText) findViewById(R.id.edtPuesto);
+        btnCancelar = (FloatingActionButton) findViewById(R.id.btnCancelar);
     }
 
     private void inicializarObjetos(){
         datos = getIntent().getExtras();
         databaseHelper = new DatabaseHelper(this);
-        empleado = new Empleado();
+        departamento = new Departamento();
     }
 
     private void establecerDatos(){
-        dni = datos.getString("dni");
+        codigo = datos.getString("codigo");
+        departamento = databaseHelper.datosDepartamento(codigo);
 
-        datosAdministrador();
-        establecerTextos();
-        funcionesAdministrador();
-        establecerImagen();
-        establecerSpinner();
+        edtNombre.setText(departamento.getNombre());
+        edtEncargado.setText(departamento.getEncargado());
 
 
-    }
-
-    private void establecerTextos() {
-        empleado = databaseHelper.datosUsuario(dni);
-        edtNombre.setText(empleado.getNombre());
-        edtApellido.setText(empleado.getApellidos());
-        edtCorreo.setText(empleado.getCorreo());
-        edtMovil.setText(empleado.getMovil());
-        edtDireccion.setText(empleado.getDireccion());
-        edtPuesto.setText(empleado.getPuesto());
-        txvDni.setText(empleado.getDni());
-    }
-
-    private void establecerImagen() {
-        Bitmap imagen = databaseHelper.obtenerImagenEmpleado(dni);
+        Bitmap imagen = databaseHelper.obtenerImagenDep(codigo);
 
         if(imagen != null){
-            imagenUsuario.setImageBitmap(imagen);
+            imgDepartamento.setImageBitmap(imagen);
         } else{
-            imagenUsuario.setImageResource(R.drawable.user_logo);
-        }
-    }
-
-    private void funcionesAdministrador() {
-        if(empleado.getAdministrador() == 1){
-            swcAdministrador.setChecked(true);
-        } else {
-            swcAdministrador.setChecked(false);
+            imgDepartamento.setImageResource(R.drawable.ic_outline_home_work_24);
         }
 
-        Empleado admin = databaseHelper.datosUsuario(LoginActivity.dni);
-
-        if( admin.getAdministrador() == 1){
-            btnBorrar.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void establecerSpinner() {
-        departamentos = databaseHelper.obtenerDepartamentos();
-        nombreDeps = new ArrayList<>();
-        for(Departamento dep : departamentos){
-            nombreDeps.add(dep.getNombre());
-        }
-
-        spDepartamento.setAdapter(new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_list, nombreDeps));
-
-        String codEmpDep = empleado.getDepartamento();
-
-        for (int i = 0;i < departamentos.size(); i++){
-            Departamento dep = departamentos.get(i);
-            if (dep.getCodigo().equals(codEmpDep)) {
-                spDepartamento.setSelection(i);
-            }
-        }
     }
 
     @Override
@@ -186,7 +115,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.btnCancelar:
                 Intent back = new Intent(this, MainActivity.class);
-                back.putExtra("dni",dni);
+                back.putExtra("dni", LoginActivity.dni);
                 startActivity(back);
                 break;
             case R.id.btnBorrar:
@@ -202,37 +131,22 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void guardarInformacion() {
-        empleado.setNombre(edtNombre.getText().toString());
-        empleado.setApellidos(edtApellido.getText().toString());
-        empleado.setCorreo(edtCorreo.getText().toString());
-        empleado.setDireccion(edtDireccion.getText().toString());
-        empleado.setMovil(edtMovil.getText().toString());
-        empleado.setPuesto(edtPuesto.getText().toString());
+        departamento.setNombre(edtNombre.getText().toString());
+        departamento.setEncargado(edtEncargado.getText().toString());
 
-        int i = spDepartamento.getSelectedItemPosition();
-        String codigoDep = departamentos.get(i).getCodigo();
-
-        databaseHelper.establecerEmpleadoDep(codigoDep, dni);
-
-        if(swcAdministrador.isChecked()){
-            empleado.setAdministrador(1);
-        } else {
-            empleado.setAdministrador(0);
-        }
-
+        // CAMBIAR
         if(imagenBitmap != null){
-            databaseHelper.guargarImagenEmpleado(imagenBitmap, dni);
+            databaseHelper.guardarImagenDep(imagenBitmap, codigo);
         }
 
-        databaseHelper.cambiarDatosUsuario(dni, empleado);
+        databaseHelper.cambiarDatosDepartamento(codigo, departamento);
 
-        dni = empleado.getDni();
         Intent main = new Intent(this, MainActivity.class);
         startActivity(main);
     }
 
     private void borrarCuenta(){
-        dialog = new Dialog(DataActivity.this);
+        dialog = new Dialog(DataDepActivity.this);
         dialog.setContentView(R.layout.custom_dialog);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -253,9 +167,9 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                databaseHelper.eliminarUsuario(dni);
-                Toast.makeText(DataActivity.this,getString(R.string.menu_cuenta_borrada), Toast.LENGTH_LONG).show();
-                Intent inicioSesion = new Intent(DataActivity.this,LoginActivity.class);
+                databaseHelper.eliminarDepartamento(codigo);
+                Toast.makeText(DataDepActivity.this,getString(R.string.menu_cuenta_borrada), Toast.LENGTH_LONG).show();
+                Intent inicioSesion = new Intent(DataDepActivity.this, MainActivity.class);
                 startActivity(inicioSesion);
             }
         });
@@ -291,16 +205,10 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
             rutaImagen = data.getData();
             try {
                 imagenBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), rutaImagen);
-                imagenUsuario.setImageBitmap(imagenBitmap);
+                imgDepartamento.setImageBitmap(imagenBitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    private void datosAdministrador(){
-        if(LoginActivity.administrador == true){
-            swcAdministrador.setClickable(true);
         }
     }
 }

@@ -6,11 +6,11 @@ import android.util.Patterns;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ValidacionSesion {
+public class ValidacionEntradas {
 
     private Context context;
 
-    public ValidacionSesion(Context context){
+    public ValidacionEntradas(Context context){
         this.context = context;
     }
 
