@@ -20,6 +20,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,19 +34,23 @@ import android.widget.Toast;
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
+import com.example.proyectotfgjavierlahoz.adaptadores.DepListAdapter;
 import com.example.proyectotfgjavierlahoz.modelos.Departamento;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
+import com.example.proyectotfgjavierlahoz.validadores.ValidacionEntradas;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class DataActivity extends AppCompatActivity implements View.OnClickListener {
 
     private DatabaseHelper databaseHelper;
     private Empleado empleado;
+    private ValidacionEntradas validacion;
 
     private ImageView imagenUsuario;
     private ImageView editImagen;
@@ -58,17 +64,24 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
     private FloatingActionButton btnCancelar;
     private FloatingActionButton btnGuardar;
     private FloatingActionButton btnBorrar;
+    private FloatingActionButton btnExpandir;
+    private FloatingActionButton btnContraseña;
     private Switch swcAdministrador;
     private Spinner spDepartamento;
 
-    private List<String> nombreDeps;
+    private boolean pulsado = false;
 
+    private Animation rotacionAbrir;
+    private Animation rotacionCerrar;
+    private Animation  ascender;
+    private Animation  descender;
+    private String dni;
+
+    private List<String> nombreDeps;
     private List<Departamento> departamentos;
 
     private Dialog dialog;
-
     private Bundle datos;
-    private String dni;
 
     Uri rutaImagen;
     Bitmap imagenBitmap;
@@ -90,6 +103,8 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         btnGuardar.setOnClickListener(this);
         btnBorrar.setOnClickListener(this);
         editImagen.setOnClickListener(this);
+        btnExpandir.setOnClickListener(this);
+        btnContraseña.setOnClickListener(this);
     }
 
     private void inicializarVistas(){
@@ -103,16 +118,24 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         btnCancelar = (FloatingActionButton) findViewById(R.id.btnCancelar);
         btnGuardar = (FloatingActionButton) findViewById(R.id.btnGuardar);
         btnBorrar = (FloatingActionButton) findViewById(R.id.btnBorrar);
+        btnContraseña = (FloatingActionButton) findViewById(R.id.btnCOntraseña);
         editImagen = (ImageView) findViewById(R.id.imgEdit);
         swcAdministrador = (Switch) findViewById(R.id.swcAdministrador);
         spDepartamento = (Spinner) findViewById(R.id.spDep);
         edtPuesto = (EditText) findViewById(R.id.edtPuesto);
+        btnExpandir = (FloatingActionButton) findViewById(R.id.fabExpandir);
+
+        rotacionAbrir = AnimationUtils.loadAnimation(DataActivity.this, R.anim.rotate_open_anim);
+        rotacionCerrar = AnimationUtils.loadAnimation(DataActivity.this, R.anim.rotate_close_anim);
+        ascender= AnimationUtils.loadAnimation(DataActivity.this, R.anim.from_bottom_anim);
+        descender= AnimationUtils.loadAnimation(DataActivity.this, R.anim.to_bottom_anim);
     }
 
     private void inicializarObjetos(){
         datos = getIntent().getExtras();
         databaseHelper = new DatabaseHelper(this);
         empleado = new Empleado();
+        validacion = new ValidacionEntradas(DataActivity.this);
     }
 
     private void establecerDatos(){
@@ -123,7 +146,6 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         funcionesAdministrador();
         establecerImagen();
         establecerSpinner();
-
 
     }
 
@@ -154,16 +176,12 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             swcAdministrador.setChecked(false);
         }
-
-        Empleado admin = databaseHelper.datosUsuario(LoginActivity.dni);
-
-        if( admin.getAdministrador() == 1){
-            btnBorrar.setVisibility(View.VISIBLE);
-        }
     }
 
     private void establecerSpinner() {
+
         departamentos = databaseHelper.obtenerDepartamentos();
+
         nombreDeps = new ArrayList<>();
         for(Departamento dep : departamentos){
             nombreDeps.add(dep.getNombre());
@@ -198,6 +216,107 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.imgEdit:
                 escogerImagen();
                 break;
+            case R.id.fabExpandir:
+                establecerBotones();
+                break;
+            case R.id.btnCOntraseña:
+                cambiarContraseña();
+                break;
+        }
+    }
+
+    private void cambiarContraseña(){
+
+        dialog = new Dialog(DataActivity.this);
+        dialog.setContentView(R.layout.custom_dialog_contrasena);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.setCancelable(false);
+
+        EditText edtAntiguaPass = dialog.findViewById(R.id.edtAntiguaPass);
+        EditText edtNuevaPass = dialog.findViewById(R.id.edtNuevaPass);
+        EditText edtNuevaPasConf = dialog.findViewById(R.id.edtNuevaPass2);
+
+        Button btnAceptar = dialog.findViewById(R.id.btnAceptarContraseña);
+        Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String contraseña = empleado.getContraseña();
+                if(!validacion.campoVacio(edtAntiguaPass, getString(R.string.contraseñaVacia))){
+                    return;
+                }
+                if(!validacion.campoVacio(edtNuevaPasConf, getString(R.string.contraseñaVacia))){
+                    return;
+                }
+                if(!validacion.campoVacio(edtNuevaPass, getString(R.string.contraseñaVacia))){
+                    return;
+                }
+                if(!contraseña.equals(edtAntiguaPass.getText().toString())){
+                    Toast.makeText(DataActivity.this, getString(R.string.errorContraseña), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(!validacion.comprobacionContraseña(edtNuevaPass, edtNuevaPasConf, getString(R.string.errorContraseña))){
+                    return;
+                }
+                String nuevaContraseña = edtNuevaPass.getText().toString();
+
+                databaseHelper.cambiarContraseña(LoginActivity.dni, nuevaContraseña);
+                Toast.makeText(DataActivity.this, getString(R.string.cambiarContraseña), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void establecerBotones(){
+        establecerVisibilidad();
+        establecerAnimaciones();
+        if(!pulsado == true){
+            pulsado = true;
+        } else {
+            pulsado = false;
+        }
+    }
+
+    private void establecerAnimaciones() {
+        if(!pulsado){
+            btnBorrar.startAnimation(ascender);
+            btnCancelar.startAnimation(ascender);
+            btnGuardar.startAnimation(ascender);
+            btnContraseña.startAnimation(ascender);
+            btnExpandir.startAnimation(rotacionAbrir);
+        } else {
+            btnBorrar.startAnimation(descender);
+            btnCancelar.startAnimation(descender);
+            btnGuardar.startAnimation(descender);
+            btnContraseña.startAnimation(descender);
+            btnExpandir.startAnimation(rotacionCerrar);
+        }
+    }
+
+    private void establecerVisibilidad(){
+        if(!pulsado){
+            Empleado admin = databaseHelper.datosUsuario(LoginActivity.dni);
+
+            if( admin.getAdministrador() == 1){
+                btnBorrar.setVisibility(View.VISIBLE);
+            }
+            btnCancelar.setVisibility(View.VISIBLE);
+            btnGuardar.setVisibility(View.VISIBLE);
+        } else {
+            btnBorrar.setVisibility(View.INVISIBLE);
+            btnCancelar.setVisibility(View.INVISIBLE);
+            btnGuardar.setVisibility(View.INVISIBLE);
         }
     }
 

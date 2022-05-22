@@ -4,6 +4,6 @@
     android:layout_height="wrap_content"
     android:padding="10dp"
     android:gravity="right"
-    android:fontFamily="monospace"
+    android:fontFamily="sans-serif"
     android:textColor="@android:color/white"
-    android:textSize="15dp" />
+    android:textSize="17dp" />

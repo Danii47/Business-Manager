@@ -9,9 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import com.example.proyectotfgjavierlahoz.actividades.usuario.DataDepActivity;
 import com.example.proyectotfgjavierlahoz.adaptadores.DepListAdapter;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentDepartamentosBinding;
 import com.example.proyectotfgjavierlahoz.modelos.Departamento;
+import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.example.proyectotfgjavierlahoz.validadores.ValidacionEntradas;
 
@@ -41,7 +44,11 @@ public class DepartamentosFragment extends Fragment implements View.OnLongClickL
     private DepListAdapter adapter;
     private List<Departamento> elementos;
 
+    private List<Empleado> empleados;
+    private List<String> nombreEmp;
+
     private DatabaseHelper bd;
+
     private ValidacionEntradas validacion;
 
     private Dialog dialog;
@@ -119,7 +126,16 @@ public class DepartamentosFragment extends Fragment implements View.OnLongClickL
 
             EditText edtCodigo = dialog.findViewById(R.id.edtCodigo);
             EditText edtNombre = dialog.findViewById(R.id.edtNombre);
-            EditText edtEncargado = dialog.findViewById(R.id.edtEncargado);
+            Spinner spEncargado = dialog.findViewById(R.id.spEncargado);
+
+            empleados = bd.obtenerUsuarios();
+            nombreEmp = new ArrayList<>();
+
+            for(Empleado emp : empleados){
+                nombreEmp.add(emp.getNombre() + " " + emp.getApellidos());
+            }
+
+            spEncargado.setAdapter(new ArrayAdapter<String>(getContext(), R.layout.spinner_list, nombreEmp));
 
 
             Button btnAceptar = dialog.findViewById(R.id.btnAceptar);
@@ -136,7 +152,7 @@ public class DepartamentosFragment extends Fragment implements View.OnLongClickL
 
                         dep.setNombre(edtNombre.getText().toString());
                         dep.setCodigo(edtCodigo.getText().toString());
-                        dep.setEncargado(edtEncargado.getText().toString());
+                        dep.setEncargado(spEncargado.getSelectedItem().toString());
                         bd.añadirDepartamento(dep);
                         elementos = bd.obtenerDepartamentos();
                         adapter = new DepListAdapter(elementos);

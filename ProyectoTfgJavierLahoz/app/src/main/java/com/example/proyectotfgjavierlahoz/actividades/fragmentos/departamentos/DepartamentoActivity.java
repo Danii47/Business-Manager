@@ -18,6 +18,7 @@ import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.DataDepActivity;
 import com.example.proyectotfgjavierlahoz.modelos.Departamento;
+import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -41,7 +42,10 @@ public class DepartamentoActivity extends AppCompatActivity implements View.OnCl
     private FloatingActionButton fabEdit;
 
     private DatabaseHelper bd;
+
     private Departamento departamento;
+    private Empleado empleado;
+
 
     Bundle datos;
     private String codigo;
@@ -78,6 +82,8 @@ public class DepartamentoActivity extends AppCompatActivity implements View.OnCl
 
         depEmpFragment = new DepEmpFragment();
         depInfoFragment = new DepInfoFragment();
+
+        empleado = new Empleado();
 
         datos = getIntent().getExtras();
         info = new Bundle();
@@ -157,7 +163,9 @@ public class DepartamentoActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void establecerDatosAdmin() {
-        if(LoginActivity.administrador == true){
+        empleado = bd.datosUsuario(LoginActivity.dni);
+
+        if(LoginActivity.administrador == true  || departamento.getEncargado().equals(empleado.getNombre() + " " + empleado.getApellidos())){
             fabEdit.show();
         }
     }

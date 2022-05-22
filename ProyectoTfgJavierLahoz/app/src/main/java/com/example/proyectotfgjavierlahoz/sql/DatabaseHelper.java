@@ -162,6 +162,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             empleado.setApellidos(cursor.getString(cursor.getColumnIndex(COL_EMP_APELLIDOS)));
             empleado.setDni(cursor.getString(cursor.getColumnIndex(COL_EMP_DNI)));
             empleado.setCorreo(cursor.getString(cursor.getColumnIndex(COL_EMP_CORREO)));
+            empleado.setContraseña(cursor.getString(cursor.getColumnIndex(COL_EMP_CONTRASEÑA)));
             empleado.setMovil(cursor.getString(cursor.getColumnIndex(COL_EMP_MOVIL)));
             empleado.setDireccion(cursor.getString(cursor.getColumnIndex(COL_EMP_DIREC)));
             empleado.setDepartamento(cursor.getString(cursor.getColumnIndex(COL_EMP_DPTO)));
@@ -502,6 +503,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             nombreDep = cursor.getString(0);
         }
         return nombreDep;
+    }
+
+    public void cambiarContraseña(String dni, String contraseña){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        ContentValues datos = new ContentValues();
+
+        datos.put(COL_EMP_CONTRASEÑA, contraseña);
+
+        bd.update(TABLA_EMPLEADOS, datos, COL_EMP_DNI + " = '" + dni  + "'", null);
+
+
     }
 }
 

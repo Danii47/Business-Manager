@@ -53,4 +53,8 @@
     <string name="insertar_dep">Departamento insertado correctamente</string>
     <string name="insertar_dep_error">Ya existe departamento con el codigo introducido</string>
     <string name="dep_codigo_error">El campo codigo esta vacio</string>
+
+    <!-- Activity editar Datos -->
+    <string name="cambiarContraseña">Contraseña cambiada correctamente</string>
+
 </resources>
