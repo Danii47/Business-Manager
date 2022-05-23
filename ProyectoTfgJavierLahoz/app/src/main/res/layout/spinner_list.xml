@@ -6,4 +6,4 @@
     android:gravity="right"
     android:fontFamily="sans-serif"
     android:textColor="@android:color/white"
-    android:textSize="17dp" />
+    android:textSize="15dp" />

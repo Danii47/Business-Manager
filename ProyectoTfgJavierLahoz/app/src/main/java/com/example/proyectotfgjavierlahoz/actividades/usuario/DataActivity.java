@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,7 +16,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -34,7 +32,6 @@ import android.widget.Toast;
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.MainActivity;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
-import com.example.proyectotfgjavierlahoz.adaptadores.DepListAdapter;
 import com.example.proyectotfgjavierlahoz.modelos.Departamento;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
 import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
@@ -44,7 +41,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class DataActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -208,7 +204,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(back);
                 break;
             case R.id.btnBorrar:
-                borrarCuenta();
+                comprobarContraseña();
                 break;
             case R.id.btnGuardar:
                 guardarInformacion();
@@ -225,10 +221,49 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void comprobarContraseña(){
+        dialog = new Dialog(DataActivity.this);
+        dialog.setContentView(R.layout.custom_dialog_con);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        dialog.setCancelable(false);
+
+        EditText edtPass = dialog.findViewById(R.id.edtPass);
+
+        Button btnAceptar = dialog.findViewById(R.id.btnAceptarContraseña);
+        Button btnCancelar = dialog.findViewById(R.id.btnCancelar);
+
+        btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String contraseña = empleado.getContraseña();
+                if(!validacion.campoVacio(edtPass, getString(R.string.contraseñaVacia))){
+                    return;
+                }
+                if(!contraseña.equals(edtPass.getText().toString())){
+                    Toast.makeText(DataActivity.this, getString(R.string.errorContraseña), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                dialog.hide();
+                borrarCuenta();
+            }
+        });
+
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
     private void cambiarContraseña(){
 
         dialog = new Dialog(DataActivity.this);
-        dialog.setContentView(R.layout.custom_dialog_contrasena);
+        dialog.setContentView(R.layout.custom_dialog_cam_con);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
@@ -308,9 +343,7 @@ public class DataActivity extends AppCompatActivity implements View.OnClickListe
         if(!pulsado){
             Empleado admin = databaseHelper.datosUsuario(LoginActivity.dni);
 
-            if( admin.getAdministrador() == 1){
-                btnBorrar.setVisibility(View.VISIBLE);
-            }
+            btnBorrar.setVisibility(View.VISIBLE);
             btnCancelar.setVisibility(View.VISIBLE);
             btnGuardar.setVisibility(View.VISIBLE);
         } else {

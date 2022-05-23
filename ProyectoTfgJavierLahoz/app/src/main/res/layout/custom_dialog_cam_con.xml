@@ -25,12 +25,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Añadir departamento"
+                android:text="Cambiar contraseña"
                 android:textColor="@color/white"
                 android:textSize="24dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.587"
+                app:layout_constraintHorizontal_bias="0.613"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"></TextView>
 
@@ -39,43 +39,40 @@
                 android:layout_width="33dp"
                 android:layout_height="32dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/txvDialog"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_add_home_24" />
+                app:srcCompat="@drawable/ic_baseline_password_24" />
 
             <Button
-                android:id="@+id/btnAceptar"
+                android:id="@+id/btnAceptarContraseña"
                 android:layout_width="wrap_content"
                 android:layout_height="33dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginEnd="188dp"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/boton_blanco"
                 android:text="Si"
                 android:textColor="@color/purple_500"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edtNombre"
-                app:layout_constraintTop_toBottomOf="@+id/spEncargado"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toStartOf="@+id/edtNuevaPass2"
+                app:layout_constraintTop_toBottomOf="@+id/edtNuevaPass2"
+                app:layout_constraintVertical_bias="0.0" />
 
             <Button
                 android:id="@+id/btnCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="33dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/boton_blanco"
                 android:text="No"
                 android:textColor="@color/purple_500"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/edtNombre"
+                app:layout_constraintEnd_toEndOf="@+id/edtNuevaPass2"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/btnAceptar"
-                app:layout_constraintTop_toBottomOf="@+id/spEncargado"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintStart_toEndOf="@+id/btnAceptarContraseña" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/group"
@@ -84,40 +81,42 @@
                 app:constraint_referenced_ids="txvDialog,imgDialog" />
 
             <EditText
-                android:id="@+id/edtCodigo"
+                android:id="@+id/edtAntiguaPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:hint="Codigo"
-                android:inputType="textPersonName"
+                android:hint="Contraseña antigua"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvDialog" />
 
             <EditText
-                android:id="@+id/edtNombre"
+                android:id="@+id/edtNuevaPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:hint="Nombre"
-                android:inputType="textPersonName"
+                android:hint="Nueva contraseña"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtCodigo"
+                app:layout_constraintTop_toBottomOf="@+id/edtAntiguaPass"
                 tools:ignore="DuplicateIds" />
 
-            <Spinner
-                android:popupBackground="@drawable/bg_spinner_black"
-                android:id="@+id/spEncargado"
+            <EditText
+                android:id="@+id/edtNuevaPass2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="Confirmar contraseña"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edtNombre"
-                app:layout_constraintTop_toBottomOf="@+id/edtNombre" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edtNuevaPass"
+                tools:ignore="DuplicateIds" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

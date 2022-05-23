@@ -12,11 +12,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +40,8 @@ import com.example.proyectotfgjavierlahoz.sql.DatabaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DataDepActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -44,16 +51,23 @@ public class DataDepActivity extends AppCompatActivity implements View.OnClickLi
     private ImageView imgDepartamento;
     private ImageView imgEdit;
     private EditText edtNombre;
-    private EditText edtEncargado;
+    private Spinner spEncargado;
 
     private FloatingActionButton btnGuardar;
     private FloatingActionButton btnCancelar;
     private FloatingActionButton btnBorrar;
+    private FloatingActionButton btnDesplegable;
+
+    private Animation rotacionAbrir;
+    private Animation rotacionCerrar;
+    private Animation  ascender;
+    private Animation  descender;
 
     private Dialog dialog;
 
     private Bundle datos;
     private String codigo;
+    private boolean pulsado = false;
 
     Uri rutaImagen;
     Bitmap imagenBitmap;
@@ -74,16 +88,23 @@ public class DataDepActivity extends AppCompatActivity implements View.OnClickLi
         btnGuardar.setOnClickListener(this);
         btnBorrar.setOnClickListener(this);
         imgEdit.setOnClickListener(this);
+        btnDesplegable.setOnClickListener(this);
     }
 
     private void inicializarVistas(){
         imgDepartamento = (ImageView) findViewById(R.id.imgDepartamento);
         edtNombre = (EditText) findViewById(R.id.edtNombre);
-        edtEncargado = (EditText) findViewById(R.id.edtEncargado);
+        spEncargado = (Spinner) findViewById(R.id.spEncargado);
         imgEdit = (ImageView) findViewById(R.id.imgEdit);
         btnGuardar = (FloatingActionButton) findViewById(R.id.btnGuardar);
         btnBorrar = (FloatingActionButton) findViewById(R.id.btnBorrar);
         btnCancelar = (FloatingActionButton) findViewById(R.id.btnCancelar);
+        btnDesplegable = (FloatingActionButton) findViewById(R.id.btnDesplegable);
+
+        rotacionAbrir = AnimationUtils.loadAnimation(DataDepActivity.this, R.anim.rotate_open_anim);
+        rotacionCerrar = AnimationUtils.loadAnimation(DataDepActivity.this, R.anim.rotate_close_anim);
+        ascender= AnimationUtils.loadAnimation(DataDepActivity.this, R.anim.from_bottom_anim);
+        descender= AnimationUtils.loadAnimation(DataDepActivity.this, R.anim.to_bottom_anim);
     }
 
     private void inicializarObjetos(){
@@ -96,8 +117,10 @@ public class DataDepActivity extends AppCompatActivity implements View.OnClickLi
         codigo = datos.getString("codigo");
         departamento = databaseHelper.datosDepartamento(codigo);
 
+        establecerSpinner();
+
         edtNombre.setText(departamento.getNombre());
-        edtEncargado.setText(departamento.getEncargado());
+
 
 
         Bitmap imagen = databaseHelper.obtenerImagenDep(codigo);
@@ -106,6 +129,27 @@ public class DataDepActivity extends AppCompatActivity implements View.OnClickLi
             imgDepartamento.setImageBitmap(imagen);
         } else{
             imgDepartamento.setImageResource(R.drawable.ic_outline_home_work_24);
+        }
+
+    }
+
+    private void establecerSpinner(){
+
+        List<Empleado> empleados = databaseHelper.obtenerUsuarios();
+        List<String> nombreEmp = new ArrayList<>();
+
+        for(Empleado emp : empleados){
+            nombreEmp.add(emp.getNombre() + " " + emp.getApellidos());
+        }
+
+        spEncargado.setAdapter(new ArrayAdapter<String>(DataDepActivity.this, R.layout.spinner_list, nombreEmp));
+
+        for(int i = 0; i < empleados.size(); i++){
+            Empleado emp = empleados.get(i);
+            if((emp.getNombre() + " " + emp.getApellidos()).equals(departamento.getEncargado())){
+                Log.i("testsp", "entra");
+                spEncargado.setSelection(i);
+            }
         }
 
     }
@@ -127,18 +171,57 @@ public class DataDepActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.imgEdit:
                 escogerImagen();
                 break;
+            case R.id.btnDesplegable:
+                establecerBotones();
+                break;
+        }
+    }
+
+    private void establecerBotones(){
+        establecerVisibilidad();
+        establecerAnimaciones();
+        if(!pulsado == true){
+            pulsado = true;
+        } else {
+            pulsado = false;
+        }
+    }
+
+    private void establecerAnimaciones() {
+        if(!pulsado){
+            btnBorrar.startAnimation(ascender);
+            btnCancelar.startAnimation(ascender);
+            btnGuardar.startAnimation(ascender);
+            btnDesplegable.startAnimation(rotacionAbrir);
+        } else {
+            btnBorrar.startAnimation(descender);
+            btnCancelar.startAnimation(descender);
+            btnGuardar.startAnimation(descender);
+            btnDesplegable.startAnimation(rotacionCerrar);
+        }
+    }
+
+    private void establecerVisibilidad(){
+        if(!pulsado){
+            Empleado admin = databaseHelper.datosUsuario(LoginActivity.dni);
+
+            btnBorrar.setVisibility(View.VISIBLE);
+            btnCancelar.setVisibility(View.VISIBLE);
+            btnGuardar.setVisibility(View.VISIBLE);
+        } else {
+            btnBorrar.setVisibility(View.INVISIBLE);
+            btnCancelar.setVisibility(View.INVISIBLE);
+            btnGuardar.setVisibility(View.INVISIBLE);
         }
     }
 
     private void guardarInformacion() {
         departamento.setNombre(edtNombre.getText().toString());
-        departamento.setEncargado(edtEncargado.getText().toString());
+        departamento.setEncargado(spEncargado.getSelectedItem().toString());
 
-        // CAMBIAR
         if(imagenBitmap != null){
             databaseHelper.guardarImagenDep(imagenBitmap, codigo);
         }
-
         databaseHelper.cambiarDatosDepartamento(codigo, departamento);
 
         Intent main = new Intent(this, MainActivity.class);

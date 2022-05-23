@@ -10,7 +10,7 @@
         android:id="@+id/edtPuesto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="48dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text=""
@@ -353,9 +353,10 @@
 
     <Spinner
         android:id="@+id/spDep"
+        android:popupBackground="@drawable/bg_spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
 
         android:layout_marginRight="-13dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"

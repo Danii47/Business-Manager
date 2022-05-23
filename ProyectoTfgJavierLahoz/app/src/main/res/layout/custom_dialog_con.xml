@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Cambiar contraseña"
+                android:text="Introduce contraseña"
                 android:textColor="@color/white"
                 android:textSize="24dp"
                 android:textStyle="bold"
@@ -48,6 +48,7 @@
                 android:id="@+id/btnAceptarContraseña"
                 android:layout_width="wrap_content"
                 android:layout_height="33dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="188dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/boton_blanco"
@@ -56,25 +57,24 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/edtNuevaPass2"
-                app:layout_constraintTop_toBottomOf="@+id/edtNuevaPass2"
+                app:layout_constraintStart_toStartOf="@+id/edtPass"
+                app:layout_constraintTop_toBottomOf="@+id/edtPass"
                 app:layout_constraintVertical_bias="1.0" />
 
             <Button
                 android:id="@+id/btnCancelar"
                 android:layout_width="wrap_content"
                 android:layout_height="33dp"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/boton_blanco"
                 android:text="No"
                 android:textColor="@color/purple_500"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/edtNuevaPass2"
+                app:layout_constraintEnd_toEndOf="@+id/edtPass"
                 app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toEndOf="@+id/btnAceptar"
-                app:layout_constraintTop_toBottomOf="@+id/edtNuevaPass2"
+                app:layout_constraintStart_toEndOf="@+id/btnAceptarContraseña"
+                app:layout_constraintTop_toBottomOf="@+id/edtPass"
                 app:layout_constraintVertical_bias="0.0" />
 
             <androidx.constraintlayout.widget.Group
@@ -84,42 +84,16 @@
                 app:constraint_referenced_ids="txvDialog,imgDialog" />
 
             <EditText
-                android:id="@+id/edtAntiguaPass"
+                android:id="@+id/edtPass"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:ems="10"
-                android:hint="Contraseña antigua"
-                android:inputType="textPersonName"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txvDialog" />
-
-            <EditText
-                android:id="@+id/edtNuevaPass"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:hint="Nueva contraseña"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtAntiguaPass"
-                tools:ignore="DuplicateIds" />
-
-            <EditText
-                android:id="@+id/edtNuevaPass2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:ems="10"
-                android:hint="Confirmar contraseña"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edtNuevaPass"
-                tools:ignore="DuplicateIds" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
