@@ -22,4 +22,10 @@
         android:name="com.example.proyectotfgjavierlahoz.actividades.fragmentos.departamentos.DepartamentosFragment"
         android:label="@string/menu_departamentos"
         tools:layout="@layout/fragment_departamentos" />
+
+    <fragment
+        android:id="@+id/nav_fichaje"
+        android:name="com.example.proyectotfgjavierlahoz.actividades.fragmentos.fichaje.FichajeFragment"
+        android:label="@string/menu_fichaje"
+        tools:layout="@layout/fragment_fichaje"></fragment>
 </navigation>

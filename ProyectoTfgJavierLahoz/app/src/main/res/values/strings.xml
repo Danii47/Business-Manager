@@ -37,6 +37,7 @@
     <string name="menu_inicio">Inicio</string>
     <string name="menu_empleados">Empleados</string>
     <string name="menu_departamentos">Departamentos</string>
+    <string name="menu_fichaje">Fichaje</string>
 
     <string name="menu_nombre">Nombre y apellidos</string>
     <string name="menu_correo">Correo electronico</string>

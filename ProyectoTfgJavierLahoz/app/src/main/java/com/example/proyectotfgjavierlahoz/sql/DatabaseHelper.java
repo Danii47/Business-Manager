@@ -13,6 +13,7 @@ import android.util.Log;
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.modelos.Departamento;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
+import com.example.proyectotfgjavierlahoz.modelos.Fichaje;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLA_EMPLEADOS = "empleados";
     private static final String TABLA_DEPARTAMENTOS = "departamentos";
     private static final String TABLA_DNI = "dni";
+    private static final String TABLA_FICHAJES = "fichajes";
 
     private static final String COL_EMP_DNI = "empleado_dni";
     private static final String COL_EMP_NOMBRE = "empleado_nombre";
@@ -48,9 +50,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COL_DEP_ENCARGADO = "departamento_encargado";
     private static final String COL_DEP_IMAGEN = "departamento_imagen";
 
+    private static final String COL_FIC_COD = "fichajes_cod";
+    private static final String COL_FIC_EMP = "fichajes_emp";
+    private static final String COL_FIC_DIA = "fichaje_dia";
+    private static final String COL_FIC_INICIO = "fichaje_inicio";
+    private static final String COL_FIC_FIN = "fichaje_fin";
+    private static final String COL_FIC_DIA_FIN = "fichaje_dia_fin";
+    private static final String COL_FIC_ACTIVO = "fichaje_activo";
+
     private static final String COL_DNI_DNI = "dni_empleado";
 
-    private String CREAR_TABLA_DEPARTAMENTOS = "Create table " + TABLA_DEPARTAMENTOS + "(" + COL_DEP_CODIGO  + " TEXT PRIMARY KEY," +
+    private String CREAR_TABLA_DEPARTAMENTOS = "Create table " + TABLA_DEPARTAMENTOS + "(" + COL_DEP_CODIGO  + " TEXT PRIMARY KEY, " +
             COL_DEP_NOMBRE + " TEXT NOT NULL, " + COL_DEP_ENCARGADO + " TEXT, " + COL_DEP_IMAGEN + " blob)";
 
     private String CREAR_TABLA_EMPLEADOS = "Create table " + TABLA_EMPLEADOS + " (" + COL_EMP_DNI + " TEXT PRIMARY KEY," +
@@ -62,10 +72,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private String CREAR_TABLA_DNI = "Create table " + TABLA_DNI  + "(" + COL_DNI_DNI + " TEXT PRIMARY KEY)";
 
+    private String CREAR_TABLA_FICHAJES = "Create table " + TABLA_FICHAJES + "(" + COL_FIC_COD + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COL_FIC_EMP + " TEXT NOT NULL, " + COL_FIC_DIA + " TEXT NOT NULL, " + COL_FIC_INICIO + " TEXT, " + COL_FIC_FIN + " TEXT, " + COL_FIC_DIA_FIN + " TEXT, " + COL_FIC_ACTIVO + " INTEGER)";
+
 
     private String BORRAR_TABLA_EMPLEADOS = "Drop table if exists " + TABLA_EMPLEADOS;
     private String BORRAR_TABLA_DEPARTAMENTOS = "Drop table if exists " + TABLA_DEPARTAMENTOS;
     private String BORRAR_TABLA_DNI = "Drop table if exists " + TABLA_DNI;
+    private String BORRAR_TABLA_FICHAJES = "Drop table if exists " + TABLA_FICHAJES;
 
 
     private Context context;
@@ -80,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_DEPARTAMENTOS);
         db.execSQL(CREAR_TABLA_EMPLEADOS);
         db.execSQL(CREAR_TABLA_DNI);
-
+        db.execSQL(CREAR_TABLA_FICHAJES);
     }
 
     @Override
@@ -88,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(BORRAR_TABLA_DEPARTAMENTOS);
         db.execSQL(BORRAR_TABLA_EMPLEADOS);
         db.execSQL(BORRAR_TABLA_DNI);
+        db.execSQL(BORRAR_TABLA_FICHAJES);
         onCreate(db);
     }
 
@@ -513,8 +528,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         datos.put(COL_EMP_CONTRASEÑA, contraseña);
 
         bd.update(TABLA_EMPLEADOS, datos, COL_EMP_DNI + " = '" + dni  + "'", null);
+    }
 
+    public void insertarFichaje(Fichaje fich){
+        SQLiteDatabase bd = this.getWritableDatabase();
 
+        ContentValues datos = new ContentValues();
+
+        datos.put(COL_FIC_EMP, fich.getFichEmp());
+        datos.put(COL_FIC_DIA, fich.getFichDia());
+        datos.put(COL_FIC_INICIO, fich.getFichInicio());
+        datos.put(COL_FIC_ACTIVO, fich.getFichActivo());
+
+        bd.insert(TABLA_FICHAJES, null, datos);
+        bd.close();
+    }
+
+    public void actualizarFichaje(Fichaje fich , String dni){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        ContentValues datos = new ContentValues();
+
+        datos.put(COL_FIC_FIN, fich.getFichFin());
+        datos.put(COL_FIC_DIA_FIN, fich.getFichFinDia());
+        datos.put(COL_FIC_ACTIVO, fich.getFichActivo());
+
+        int rows = bd.update(TABLA_FICHAJES, datos, COL_FIC_EMP + " = '" + dni + "'" + " and " + COL_FIC_FIN  + " is NULL ", null);
+        Log.i("testrows", String.valueOf(rows));
+    }
+
+    @SuppressLint("Range")
+    public List<Fichaje> obtenerFichajes(String dni){
+
+        List<Fichaje> listaFichajes = new ArrayList<>();
+
+        SQLiteDatabase bd = this.getReadableDatabase();
+
+        String[] columnas = {
+                COL_FIC_COD, COL_FIC_EMP, COL_FIC_DIA, COL_FIC_INICIO, COL_FIC_FIN, COL_FIC_DIA_FIN, COL_FIC_ACTIVO
+        };
+
+        Cursor cursor = bd.query(TABLA_FICHAJES, columnas, COL_FIC_EMP + " = '" + dni + "'" , null, null, null, null);
+
+        if(cursor.moveToFirst()){
+            do {
+                Fichaje fichaje = new Fichaje();
+                fichaje.setFichCod(cursor.getInt(cursor.getColumnIndex(COL_FIC_COD)));
+                fichaje.setFichEmp(cursor.getString(cursor.getColumnIndex(COL_FIC_EMP)));
+                fichaje.setFichDia(cursor.getString(cursor.getColumnIndex(COL_FIC_DIA)));
+                fichaje.setFichInicio(cursor.getString(cursor.getColumnIndex(COL_FIC_INICIO)));
+                fichaje.setFichFin(cursor.getString(cursor.getColumnIndex(COL_FIC_FIN)));
+                fichaje.setFichFinDia(cursor.getString(cursor.getColumnIndex(COL_FIC_DIA_FIN)));
+                fichaje.setFichActivo(cursor.getInt(cursor.getColumnIndex(COL_FIC_ACTIVO)));
+
+                listaFichajes.add(fichaje);
+            }while(cursor.moveToNext());
+            cursor.close();
+            bd.close();
+        }
+        return listaFichajes;
     }
 }
 

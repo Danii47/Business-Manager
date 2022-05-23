@@ -15,5 +15,9 @@
             android:id="@+id/nav_departamentos"
             android:icon="@drawable/icons8_department_60"
             android:title="@string/menu_departamentos" />
+        <item
+            android:id="@+id/nav_fichaje"
+            android:icon="@drawable/ic_baseline_access_time_24"
+            android:title="@string/menu_fichaje"></item>
     </group>
 </menu>
