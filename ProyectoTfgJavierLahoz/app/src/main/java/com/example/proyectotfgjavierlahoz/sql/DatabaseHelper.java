@@ -568,7 +568,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 COL_FIC_COD, COL_FIC_EMP, COL_FIC_DIA, COL_FIC_INICIO, COL_FIC_FIN, COL_FIC_DIA_FIN, COL_FIC_ACTIVO
         };
 
-        Cursor cursor = bd.query(TABLA_FICHAJES, columnas, COL_FIC_EMP + " = '" + dni + "'" , null, null, null, null);
+        Cursor cursor = bd.query(TABLA_FICHAJES, columnas, COL_FIC_EMP + " = '" + dni + "'" , null, null, null, COL_FIC_DIA + " DESC, " + COL_FIC_INICIO + " DESC");
 
         if(cursor.moveToFirst()){
             do {
@@ -587,6 +587,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             bd.close();
         }
         return listaFichajes;
+    }
+
+    public void eliminarFichaje(int codigo){
+        SQLiteDatabase bd = this.getWritableDatabase();
+
+        int rows = bd.delete(TABLA_FICHAJES, COL_FIC_COD + " = " + "'" + codigo + "'", null);
+        Log.i("testfich", "filas eliminadas" + rows);
     }
 }
 

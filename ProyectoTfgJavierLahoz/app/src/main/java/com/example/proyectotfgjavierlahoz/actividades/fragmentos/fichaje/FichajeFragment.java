@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.proyectotfgjavierlahoz.R;
 import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.InicioViewModel;
@@ -21,6 +22,7 @@ import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.LaboralF
 import com.example.proyectotfgjavierlahoz.actividades.fragmentos.inicio.PersonalFragment;
 import com.example.proyectotfgjavierlahoz.actividades.usuario.DataActivity;
 import com.example.proyectotfgjavierlahoz.actividades.registro.LoginActivity;
+import com.example.proyectotfgjavierlahoz.adaptadores.FichListAdapter;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentFichajeBinding;
 import com.example.proyectotfgjavierlahoz.databinding.FragmentInicioBinding;
 import com.example.proyectotfgjavierlahoz.modelos.Empleado;
@@ -31,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class FichajeFragment extends Fragment implements View.OnClickListener {
+public class FichajeFragment extends Fragment implements View.OnClickListener, View.OnLongClickListener {
 
     private FragmentFichajeBinding binding;
     private DatabaseHelper bd;
@@ -39,6 +41,9 @@ public class FichajeFragment extends Fragment implements View.OnClickListener {
     private boolean activo = false;
 
     private Fichaje fichaje;
+    private List<Fichaje> elementos;
+
+    private FichListAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -47,8 +52,9 @@ public class FichajeFragment extends Fragment implements View.OnClickListener {
         View root = binding.getRoot();
 
 
-        escuchadoresBotones();
+
         inicializarObjetos();
+        escuchadoresBotones();
         establecerBotones();
 
         return root;
@@ -71,11 +77,20 @@ public class FichajeFragment extends Fragment implements View.OnClickListener {
     private void inicializarObjetos(){
         fichaje = new Fichaje();
         bd = new DatabaseHelper(getContext());
+
+        LinearLayoutManager manager = new LinearLayoutManager(getContext());
+        binding.rvFichajes.setLayoutManager(manager);
+
+        elementos = bd.obtenerFichajes(LoginActivity.dni);
+        adapter = new FichListAdapter(elementos);
+
     }
 
     private void escuchadoresBotones(){
         binding.fabIniciar.setOnClickListener(this);
         binding.fabParar.setOnClickListener(this);
+        binding.rvFichajes.setAdapter(adapter);
+        adapter.setOnLongClickListener(this);
     }
 
     @Override
@@ -98,6 +113,10 @@ public class FichajeFragment extends Fragment implements View.OnClickListener {
 
                 bd.insertarFichaje(fichaje);
 
+                elementos = bd.obtenerFichajes(LoginActivity.dni);
+                adapter = new FichListAdapter(elementos);
+                binding.rvFichajes.setAdapter(adapter);
+
                 break;
             case R.id.fabParar:
                 binding.fabIniciar.setVisibility(View.VISIBLE);
@@ -109,7 +128,25 @@ public class FichajeFragment extends Fragment implements View.OnClickListener {
 
                 bd.actualizarFichaje(fichaje, LoginActivity.dni);
 
+                elementos = bd.obtenerFichajes(LoginActivity.dni);
+                adapter = new FichListAdapter(elementos);
+                binding.rvFichajes.setAdapter(adapter);
+
                 break;
         }
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+
+        int position = binding.rvFichajes.getChildAdapterPosition(view);
+        int codigo = elementos.get(position).getFichCod();
+
+        bd.eliminarFichaje(codigo);
+
+        elementos.remove(position);
+        adapter.notifyItemRemoved(position);
+
+        return false;
     }
 }
